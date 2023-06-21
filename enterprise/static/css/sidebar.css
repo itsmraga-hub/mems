@@ -1,0 +1,50 @@
+.sidebar-container .sidebar-container__div {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.sidebar-container__div .burger-icon {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.sidebar-container__div .burger-icon i {
+  /* width: 2em; */
+  padding: 1rem;
+}
+
+.sidebar-container__div div div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  padding: 1rem;
+}
+
+.sidebar-container__div div div:hover {
+  cursor: pointer;
+}
+/* .sidebar-container__div h2 {
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  padding: 1rem;
+} */
+
+.sidebar-container__div h2:hover {
+  cursor: pointer;
+}
+
+.sidebar-container__div-dropdown {
+  font-size: 1.75rem;
+  padding: 0 1em;
+  font-weight: bold;
+}
+
+.sidebar-container__div-dropdown li {
+  border-bottom: 1px solid #bbb;
+  padding: 1rem;
+}

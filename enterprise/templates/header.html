@@ -1,0 +1,31 @@
+<div class="header-container__div" id="'header-container__div">
+  <div class="header-container__div-logo">
+    <h2><a href="{% url 'home' %}">mems-prise</a></h2>
+  </div>
+  <div class="header-container__div-tabs">
+    <ul class="header-container__div-tabs-ul">
+      <li>Home</li>
+      <li id="product">Products</li>
+      <li>About us</li>
+      <li>Contact Us</li>
+      {% if user.is_authenticated %}
+        <li>
+          <div class="header-container__div-profile" id="dropdown-profile-icon">
+            <i class="fas fa-user"></i>
+            <i class="fas fa-caret-down"></i>
+          </div>
+          <div class="dropdown-content none" id="dropdown-content">
+            <ul>
+              <li><a href="http://">Profile</a></li>
+              <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+              <li><a href="http://">Profile</a></li>
+              <li><a href="http://">Another</a></li>
+            </ul>
+          </div>
+        </li>
+      {% else %}
+        <li>Log in</li>
+      {% endif %}
+    </ul>
+  </div>
+</div>
