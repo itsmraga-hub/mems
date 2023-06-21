@@ -1,0 +1,45 @@
+.main-content-container {
+  width: 75%;
+  /* border: 1px solid #bbb; */
+  font-size: 2em;
+  padding-top: 1em;
+}
+
+.main-content-container h1 {
+  width: 90%;
+  padding-left: 1em;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #bbb;
+  /* color: red; */
+}
+
+.main-content-container .main-content-container__dashboard {
+  font-size: 2rem;
+  padding: 1em;
+  display: flex;
+  gap: 1em;
+}
+
+.main-content-container .main-content-container__dashboard div {
+  width: 30%;
+  aspect-ratio: 1 / 0.45;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content-container__dashboard div span {
+  display: inline-block;
+  
+}
+
+.main-content-container__dashboard div a {
+  display: inline-block;
+  font-size: 1.5rem;
+  color: rgb(12, 170, 243);
+  text-decoration: underline;
+  align-self: flex-end;
+  justify-self: flex-end;
+}
