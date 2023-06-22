@@ -158,9 +158,10 @@ class Order(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=255, null=True)
+    p_code = models.CharField(max_length=255, null=True)
     description = models.TextField(max_length=255, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True)
-    image = models.ImageField(upload_to='enterprise/media/products', blank=True)
+    image = models.ImageField(upload_to='products', blank=True)
     quantity = models.IntegerField(default=0, blank=True)
     brand = models.CharField(max_length=255, null=True)
     category = models.CharField(max_length=255, blank=True)
@@ -177,3 +178,20 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"OrderItem #{self.id} for Order #{self.order.id}"
+
+class ExpenseCategory(models.Model):
+    name = models.CharField(max_length=50)
+    ec_code = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+class Expense(models.Model):
+    description = models.CharField(max_length=255)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    date = models.DateField()
+    category = models.ForeignKey(ExpenseCategory, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.description
