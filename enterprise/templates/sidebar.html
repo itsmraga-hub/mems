@@ -1,6 +1,18 @@
 <div class="sidebar-container__div">
   <div class="burger-icon" id="sidebar-open">
-    <i class="fas fa-bars fa-lg"></i>
+    <i class="fas fa-bars fa-lg hover"></i>
+  </div>
+  <div>
+    <div id="sidebar-dashboards" class="hover">
+      <h2>Dashboard</h2>
+      <i class="fas fa-caret-down"></i>
+    </div>
+
+    <ul class="sidebar-container__div-dropdown none" id="sidebar-container__div-dropdown-dashboards">
+      <li><a href="{% url 'admin_dashboard' %}">Admin Dashboard</a></li>
+      <li><a href="{% url 'dashboard' %}">Staff Dashboard</a></li>
+      <li><a href="{% url 'dashboard' %}">Client Dashboard</a></li>
+    </ul>
   </div>
   <div>
     <div id="sidebar-products" class="hover">
@@ -9,8 +21,8 @@
     </div>
 
     <ul class="sidebar-container__div-dropdown block" id="sidebar-container__div-dropdown-products">
-      <li><a href="http://">All Products</a></li>
-      <li><a href="http://">Add Products</a></li>
+      <li><a href="{% url 'products' %}">All Products</a></li>
+      <li><a href="{% url 'add_product' %}">Add Products</a></li>
       <li><a href="http://">Update Products</a></li>
       <li><a href="http://">Special offers</a></li>
     </ul>
