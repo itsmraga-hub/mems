@@ -23,13 +23,6 @@ main {
   gap: 1em;
 }
 
-.sidebar-container {
-  width: 25%;
-  font-size: 2em;
-  height: 100vh;
-  background-color: #d3d3d3;
-}
-
 a {
   text-decoration: none;
 }
@@ -49,3 +42,8 @@ ul {
 .hover {
   cursor: pointer;
 }
+
+/* img {
+  width: 40px;
+  aspect-ratio: 1 / 1;
+} */
