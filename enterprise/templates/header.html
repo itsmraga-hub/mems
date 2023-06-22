@@ -4,8 +4,8 @@
   </div>
   <div class="header-container__div-tabs">
     <ul class="header-container__div-tabs-ul">
-      <li>Home</li>
-      <li id="product">Products</li>
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li id="product"><a href="{% url 'products' %}">Products</a></li>
       <li>About us</li>
       <li>Contact Us</li>
       {% if user.is_authenticated %}
@@ -24,7 +24,8 @@
           </div>
         </li>
       {% else %}
-        <li>Log in</li>
+        <li><a href="{% url 'client_login' %}">Log in</a></li>
+        <li><a href="{% url 'client_signup' %}">Sign Up</a></li>
       {% endif %}
     </ul>
   </div>
