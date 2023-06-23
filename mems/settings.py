@@ -74,6 +74,8 @@ WSGI_APPLICATION = 'mems.wsgi.application'
 
 AUTH_USER_MODEL = 'enterprise.User'
 
+LOGOUT_REDIRECT_URL = 'client_login'
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 

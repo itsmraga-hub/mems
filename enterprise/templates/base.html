@@ -11,9 +11,11 @@
   </header>
   <main>
     <!-- <h1>Main Body</h1> -->
+    {% if user.is_authenticated %}
     <section class="sidebar-container" id="sidebar-container">
       {% include "sidebar.html" %}
     </section>
+    {% endif %}
 
     {% block content %}
 
