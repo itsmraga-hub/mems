@@ -33,10 +33,12 @@
       <i class="fas fa-caret-down"></i>
     </div>
     <ul class="sidebar-container__div-dropdown none" id="sidebar-container__div-dropdown-users">
-      <li><a href="http://">All Clients</a></li>
-      <li><a href="http://">All Staff</a></li>
-      <li><a href="http://">Manage Staff</a></li>
-      <li><a href="http://">Archived Users</a></li>
+      <li><a href="{% url 'users' %}">All Users</a></li>
+      <li><a href="{% url 'clients' %}">All Clients</a></li>
+      <li><a href="{% url 'staff' %}">All Staff</a></li>
+      <li><a href="{% url 'admins' %}">Admins</a></li>
+      <li><a href="">Manage Staff</a></li>
+      <li><a href="{% url 'archived_users' %}">Archived Users</a></li>
     </ul>
   </div>
   <div>
@@ -45,10 +47,10 @@
       <i class="fas fa-caret-down"></i>
     </div>
     <ul class="sidebar-container__div-dropdown none" id="sidebar-container__div-dropdown-orders">
-      <li><a href="http://">All Orders</a></li>
+      <li><a href="{% url 'orders' %}">All Orders</a></li>
       <li><a href="http://">Create Order</a></li>
-      <li><a href="http://">Pending Orders</a></li>
-      <li><a href="http://">Complete Orders</a></li>
+      <li><a href="{% url 'pending_orders' %}">Pending Orders</a></li>
+      <li><a href="{% url 'completed_orders' %} ">Complete Orders</a></li>
     </ul>
   </div>
 </div>

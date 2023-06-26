@@ -5,11 +5,14 @@ from django.http import HttpResponse
 import json
 
 # Import models
-from .models import Product
+from .models import Product, Order, OrderItem, ExpenseCategory, Expense, User
 
 # Import project app logic
 from .add_product import SaveProduct
-from.create_account import CreateClientAccount
+from .create_account import CreateClientAccount
+from .create_order import CreateOrder
+from .create_admin import CreateAdmin
+from .create_staff import CreateStaffAccount
 
 
 
@@ -91,3 +94,170 @@ def products(request):
     return render(request, 'products.html', {'products': products})
   except Exception as e:
     return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+  
+def orders(request):
+  try:
+    orders = Order.objects.all()
+    return render(request, 'orders.html', {'orders': orders})
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+  
+
+def pending_orders(request):
+  try:
+    orders = Order.objects.filter(status='pending')
+    return render(request, 'orders.html', {'orders': orders})
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+
+def completed_orders(request):
+  try:
+    orders = Order.objects.filter(status='completed')
+    return render(request, 'orders.html', {'orders': orders})
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+
+def order(request, order_code):
+  pass
+
+
+@login_required
+def new_order(request):
+    products_param = request.GET.get('products')
+    products = json.loads(products_param) if products_param else []
+    # print(products)
+    selected_products = []
+
+    for i in range(len(products)):
+      p_id = products[i].get('product_id')
+      p = Product.objects.get(p_code=p_id)
+      p.client_quantity = products[i].get('quantity', 1)
+      selected_products.append(p)
+
+    if request.method == 'POST':
+      user = request.user
+      payment_method = request.POST.get('payment_method')
+      total_amount = 0
+      shipping_address = request.POST.get('shipping_address')
+      CreateOrder.create_new_order(user, payment_method, total_amount, shipping_address, selected_products)
+
+      return redirect('orders')
+
+    return render(request, 'new_order.html', {'selected_products': selected_products})
+
+
+def confirm_order(request):
+  if request.method == 'POST':
+    # order = Order.objects.create()
+    print(request.__dict__)
+    return redirect('cart_order')
+
+
+def add_to_order(request):
+  try:
+    if request.method == 'POST':
+      order_items = json.loads(request.POST.get('cart_items'))
+      # print(order_items)
+
+    return render(request, 'order.html')
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+
+def user(request, user_id):
+  user = User.objects.get(user_id=user_id)
+  return render(request, 'user.html', {'user': user})
+
+def system_users(request):
+  try:
+    users = list(User.objects.all())
+
+    return render(request, 'users.html', {'users': users})
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+  
+
+def system_admins(request):
+  try:
+    users = User.objects.filter(is_admin=True)
+      # print(order_items)
+
+    return render(request, 'users.html', {'users': users})
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+
+def system_clients(request):
+  try:
+    users = User.objects.filter(is_staff=False)
+      # print(order_items)
+
+    return render(request, 'users.html', {'users': users})
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+
+def system_staff(request):
+  try:
+    users = User.objects.filter(is_staff=True)
+      # print(order_items)
+
+    return render(request, 'users.html', {'users': users})
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+
+def system_archived_users(request):
+  try:
+    users = User.objects.filter(is_archived=True)
+      # print(order_items)
+
+    return render(request, 'users.html', {'users': users})
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+
+def create_admin(request):
+  try:
+    if request.method == 'POST':
+      email = request.POST.get('email')
+      first_name = request.POST.get('first_name')
+      last_name = request.POST.get('last_name')
+      password1 = request.POST.get('password1')
+      password2 = request.POST.get('password2')
+      phone = request.POST.get('phone')
+      if password1 == password2:
+        CreateAdmin.save_admin_account('', first_name, last_name, email, phone, password1)
+        
+        return redirect('dashboard')
+      else:
+        return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': 'Password didn\'t match. Check and try again!'}}))
+    else:
+      return render(request, 'add_admin.html')
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': str(e)}}))
+
+
+def create_staff(request):
+  try:
+    if request.method == 'POST':
+      email = request.POST.get('email')
+      first_name = request.POST.get('first_name')
+      last_name = request.POST.get('last_name')
+      password1 = request.POST.get('password1')
+      password2 = request.POST.get('password2')
+      phone = request.POST.get('phone')
+      if password1 == password2:
+        CreateStaffAccount.save_staff_account('', first_name, last_name, email, phone, password1)
+        
+        return redirect('dashboard')
+      else:
+        return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': 'Password didn\'t match. Check and try again!'}}))
+    else:
+      # return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': 'Try again after some time'}}))
+      return render(request, 'staff_signup.html')
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': str(e)}}))

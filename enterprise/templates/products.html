@@ -4,12 +4,19 @@
 <section class="products-container" id="products-container">
   <!-- <h1>Products</h1> -->
   {% for product in products %}
-  <div class="container product-container">
-    {% if product.image %}
-    <img src="{{ product.image.url }}" alt="product.name" />
-    {% endif %}
-    <p class="product-name">{{product.name}}</p>
-    <p class="product-price">$ {{product.price}}</p>
+  <div class="p-container">
+    <div class="container product-container" id="{{product.p_code}}">
+      {% if product.image %}
+      <img src="{{ product.image.url }}" alt="product.name" />
+      {% endif %}
+      <p class="product-name">{{product.name}}</p>
+      <p class="product-price">$ {{product.price}}</p>
+    </div>
+    <div class="quantity-cart">
+      <input type="number" class="quantity" min="1" value="1">
+      <button id="{{product.p_code}}" class="add-to-cart" data-product-id="{{ product.id }}" data-product-code="{{product.p_code}}">Add to
+        Order</button>
+    </div>
   </div>
   {% endfor %}
 </section>

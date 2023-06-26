@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="form-container">
+  <!-- <form method="POST" action="/confirm-order/"> -->
+  <h2>Order Confirmation</h2>
+  <div class="container" name="'orderForm">
+    <form method="POST">
+      {% csrf_token %}
+      <!-- Render form fields for selected products -->
+      {% for product in selected_products %}
+      <h3>{{ product.name }}</h3>
+      <input type="hidden" name="product_ids[]" value="{{ product.id }}">
+      <label for="quantity_{{ product.id }}">Quantity:</label>
+      <input type="number" name="quantities[]" id="quantity_{{ product.id }}" min="1"
+        value="{{product.client_quantity}}">
+      {% endfor %}
+      <!-- Include other relevant form fields such as customer details, payment method, etc. -->
+      <div>
+        <label for="id_status">Status:</label>
+        <select id="id_status" name="status">
+          <option value="pending">Pending</option>
+          <option value="in_progress">In Progress</option>
+          <option value="Completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div>
+        <label for="id_payment_method">Payment Method:</label>
+        <select id="id_payment_method" name="payment_method">
+          <option value="credit_card">Credit Card</option>
+          <option value="cash_on_delivery">Cash on Delivery</option>
+          <option value="MPESA">MPESA</option>
+          <option value="paypal">PayPal</option>
+        </select>
+      </div>
+      <div>
+        <label for="id_shipping_address">Shipping Address:</label>
+        <textarea id="id_shipping_address" name="shipping_address" rows="4" cols="50"></textarea>
+      </div>
+      <div>
+        <input type="submit" value="Confirm Order">
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

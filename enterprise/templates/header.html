@@ -9,24 +9,25 @@
       <li>About us</li>
       <li>Contact Us</li>
       {% if user.is_authenticated %}
-        <li>
-          <div class="header-container__div-profile" id="dropdown-profile-icon">
-            <i class="fas fa-user"></i>
-            <i class="fas fa-caret-down"></i>
-          </div>
-          <div class="dropdown-content none" id="dropdown-content">
-            <h4>{{ user.first_name }} {{ user.last_name }}</h4>
-            <ul>
-              <li><a href="http://">Profile</a></li>
-              <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
-              <li><a href="http://">Profile</a></li>
-              <li><a href="{% url 'signout' %}">Sign out</a></li>
-            </ul>
-          </div>
-        </li>
+      <li><a href="{% url 'add_to_order' %}" id="order" class="view-order"><i class="fas fa-cart-plus"></i></a></li>
+      <li>
+        <div class="header-container__div-profile" id="dropdown-profile-icon">
+          <i class="fas fa-user"></i>
+          <i class="fas fa-caret-down"></i>
+        </div>
+        <div class="dropdown-content none" id="dropdown-content">
+          <h4>{{ user.first_name }} {{ user.last_name }}</h4>
+          <ul>
+            <li><a href="http://">Profile</a></li>
+            <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+            <li><a href="http://">Profile</a></li>
+            <li><a href="{% url 'signout' %}">Sign out</a></li>
+          </ul>
+        </div>
+      </li>
       {% else %}
-        <li><a href="{% url 'client_login' %}">Log in</a></li>
-        <li><a href="{% url 'client_signup' %}">Sign Up</a></li>
+      <li><a href="{% url 'client_login' %}">Log in</a></li>
+      <li><a href="{% url 'client_signup' %}">Sign Up</a></li>
       {% endif %}
     </ul>
   </div>
