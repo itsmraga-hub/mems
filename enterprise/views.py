@@ -5,12 +5,14 @@ from django.http import HttpResponse
 import json
 
 # Import models
-from .models import Product, Order, OrderItem, ExpenseCategory, Expense
+from .models import Product, Order, OrderItem, ExpenseCategory, Expense, User
 
 # Import project app logic
 from .add_product import SaveProduct
-from.create_account import CreateClientAccount
-from.create_order import CreateOrder
+from .create_account import CreateClientAccount
+from .create_order import CreateOrder
+from .create_admin import CreateAdmin
+from .create_staff import CreateStaffAccount
 
 
 
@@ -163,3 +165,99 @@ def add_to_order(request):
     return render(request, 'order.html')
   except Exception as e:
     return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+
+def user(request, user_id):
+  user = User.objects.get(user_id=user_id)
+  return render(request, 'user.html', {'user': user})
+
+def system_users(request):
+  try:
+    users = list(User.objects.all())
+
+    return render(request, 'users.html', {'users': users})
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+  
+
+def system_admins(request):
+  try:
+    users = User.objects.filter(is_admin=True)
+      # print(order_items)
+
+    return render(request, 'users.html', {'users': users})
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+
+def system_clients(request):
+  try:
+    users = User.objects.filter(is_staff=False)
+      # print(order_items)
+
+    return render(request, 'users.html', {'users': users})
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+
+def system_staff(request):
+  try:
+    users = User.objects.filter(is_staff=True)
+      # print(order_items)
+
+    return render(request, 'users.html', {'users': users})
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+
+def system_archived_users(request):
+  try:
+    users = User.objects.filter(is_archived=True)
+      # print(order_items)
+
+    return render(request, 'users.html', {'users': users})
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+
+def create_admin(request):
+  try:
+    if request.method == 'POST':
+      email = request.POST.get('email')
+      first_name = request.POST.get('first_name')
+      last_name = request.POST.get('last_name')
+      password1 = request.POST.get('password1')
+      password2 = request.POST.get('password2')
+      phone = request.POST.get('phone')
+      if password1 == password2:
+        CreateAdmin.save_admin_account('', first_name, last_name, email, phone, password1)
+        
+        return redirect('dashboard')
+      else:
+        return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': 'Password didn\'t match. Check and try again!'}}))
+    else:
+      return render(request, 'add_admin.html')
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': str(e)}}))
+
+
+def create_staff(request):
+  try:
+    if request.method == 'POST':
+      email = request.POST.get('email')
+      first_name = request.POST.get('first_name')
+      last_name = request.POST.get('last_name')
+      password1 = request.POST.get('password1')
+      password2 = request.POST.get('password2')
+      phone = request.POST.get('phone')
+      if password1 == password2:
+        CreateStaffAccount.save_staff_account('', first_name, last_name, email, phone, password1)
+        
+        return redirect('dashboard')
+      else:
+        return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': 'Password didn\'t match. Check and try again!'}}))
+    else:
+      # return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': 'Try again after some time'}}))
+      return render(request, 'staff_signup.html')
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': str(e)}}))
