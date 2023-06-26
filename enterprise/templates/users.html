@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+  <h2>All Users</h2>
+  <div class="users-container">
+    <ul class="users">
+      {% for user in users %}
+      <a href="{% url 'user' user.user_id %}">{{user}}</a>
+      <p>{{user.user_id}}</p>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endblock %}
