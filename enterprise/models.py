@@ -144,7 +144,8 @@ class Order(models.Model):
         ('MPESA', 'MPESA'),
         ('paypal', 'PayPal'),
     )
-    order_id = models.CharField(max_length=255, unique=True, blank=True)
+    order_code = models.CharField(max_length=255, unique=True, blank=True)
+    confirmed = models.BooleanField(default=False)
     client = models.ForeignKey(User, on_delete=models.CASCADE, default='')
     order_date = models.DateTimeField(
         verbose_name='Date of order', auto_now_add=True, blank=True)
@@ -154,6 +155,15 @@ class Order(models.Model):
     payment_method = models.CharField(
         max_length=30, choices=PAYMENT_METHOD_CHOICES, default='mpesa')
     shipping_address = models.TextField(blank=True)
+
+    def add_order_item_to_order(self, product, quantity, price):
+        order_item = OrderItem.objects.create(
+            order=self,
+            product=product,
+            quantity=quantity,
+            price=price
+        )
+        return order_item
 
 
 class Product(models.Model):
