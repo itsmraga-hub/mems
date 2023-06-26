@@ -20,7 +20,15 @@ urlpatterns = [
     path('add_to_order', views.add_to_order, name='add_to_order'),
     path('orders/<str:order_code>', views.order, name='cart_order'),
     path('order/', views.new_order, name='new_order'),
-    path('confirm-order', views.confirm_order, name='confirm_order')
+    path('confirm-order', views.confirm_order, name='confirm_order'),
+    path('users', views.system_users, name='users'),
+    path('admins', views.system_admins, name='admins'),
+    path('user/<str:user_id>', views.user, name='user'),
+    path('staff', views.system_staff, name='staff'),
+    path('clients', views.system_clients, name='clients'),
+    path('archived_users', views.system_archived_users, name='archived_users'),
+    path('create-admin', views.create_admin, name='create_admin'),
+    path('create-staff', views.create_staff, name='create_staff')
     # path()
 ]
 
