@@ -5,11 +5,12 @@ from django.http import HttpResponse
 import json
 
 # Import models
-from .models import Product
+from .models import Product, Order, OrderItem, ExpenseCategory, Expense
 
 # Import project app logic
 from .add_product import SaveProduct
 from.create_account import CreateClientAccount
+from.create_order import CreateOrder
 
 
 
@@ -89,5 +90,76 @@ def products(request):
   try:
     products = Product.objects.all()
     return render(request, 'products.html', {'products': products})
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+  
+def orders(request):
+  try:
+    orders = Order.objects.all()
+    return render(request, 'orders.html', {'orders': orders})
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+  
+
+def pending_orders(request):
+  try:
+    orders = Order.objects.filter(status='pending')
+    return render(request, 'orders.html', {'orders': orders})
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+
+def completed_orders(request):
+  try:
+    orders = Order.objects.filter(status='completed')
+    return render(request, 'orders.html', {'orders': orders})
+  except Exception as e:
+    return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+
+def order(request, order_code):
+  pass
+
+
+@login_required
+def new_order(request):
+    products_param = request.GET.get('products')
+    products = json.loads(products_param) if products_param else []
+    # print(products)
+    selected_products = []
+
+    for i in range(len(products)):
+      p_id = products[i].get('product_id')
+      p = Product.objects.get(p_code=p_id)
+      p.client_quantity = products[i].get('quantity', 1)
+      selected_products.append(p)
+
+    if request.method == 'POST':
+      user = request.user
+      payment_method = request.POST.get('payment_method')
+      total_amount = 0
+      shipping_address = request.POST.get('shipping_address')
+      CreateOrder.create_new_order(user, payment_method, total_amount, shipping_address, selected_products)
+
+      return redirect('orders')
+
+    return render(request, 'new_order.html', {'selected_products': selected_products})
+
+
+def confirm_order(request):
+  if request.method == 'POST':
+    # order = Order.objects.create()
+    print(request.__dict__)
+    return redirect('cart_order')
+
+
+def add_to_order(request):
+  try:
+    if request.method == 'POST':
+      order_items = json.loads(request.POST.get('cart_items'))
+      # print(order_items)
+
+    return render(request, 'order.html')
   except Exception as e:
     return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
