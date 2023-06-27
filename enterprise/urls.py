@@ -18,7 +18,7 @@ urlpatterns = [
     path('orders/pending', views.pending_orders, name='pending_orders'),
     path('orders/completed', views.completed_orders, name='completed_orders'),
     path('add_to_order', views.add_to_order, name='add_to_order'),
-    path('orders/<str:order_code>', views.order, name='cart_order'),
+    path('orders/<str:order_code>', views.order, name='order'),
     path('order/', views.new_order, name='new_order'),
     path('confirm-order', views.confirm_order, name='confirm_order'),
     path('users', views.system_users, name='users'),
@@ -28,8 +28,10 @@ urlpatterns = [
     path('clients', views.system_clients, name='clients'),
     path('archived_users', views.system_archived_users, name='archived_users'),
     path('create-admin', views.create_admin, name='create_admin'),
-    path('create-staff', views.create_staff, name='create_staff')
-    # path()
+    path('create-staff', views.create_staff, name='create_staff'),
+    path('process-payment/<str:order_code>', views.process_payment, name='process_payment'),
+    path('payment-done', views.payment_done, name='payment_done'),
+    path('payment-cancelled', views.payment_cancelled, name='payment_cancelled')
 ]
 
 if settings.DEBUG:
