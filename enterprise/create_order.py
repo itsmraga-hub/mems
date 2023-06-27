@@ -28,8 +28,16 @@ class CreateOrder:
             quantity=selected_product.client_quantity,
             price=selected_product.price
           )
+          item_total = item.subtotal()
+          order.total_amount += item_total
+          order.save()
       except Exception as e:
         return HttpResponse(json.dumps({"status": "fail", "data": {"message": str(e)}}))
       return HttpResponse(json.dumps({"status": "success", "data": {"message": order_id}}))
     except Exception as e:
       return HttpResponse(json.dumps({"status": "fail", "data": {"message": str(e)}}))
+
+
+  def find_total_amount(selected_products):
+    for i in range(selected_products()):
+      pass

@@ -26,7 +26,13 @@ SECRET_KEY = 'django-insecure-xj+1zl79!7fyf=&gw0($r4rycw6yr-4$0sskhqf!53)6$)l3ea
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*', '*.ngrok-free.app', 'https://1276-105-163-1-222.ngrok-free.app']
+
+CORS_ORIGIN_WHITELIST = [
+    'https://2fb8-105-163-1-222.ngrok-free.app',
+    '*',
+    '*.ngrok-free.app',
+]
 
 
 # Application definition
@@ -39,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'enterprise',
+    'paypal.standard.ipn',
     'fontawesomefree'
 ]
 
@@ -139,8 +146,35 @@ STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+# PAYPAL_RECEIVER_EMAIL = 'itsmraga@gmail.com'
+PAYPAL_RECEIVER_EMAIL = 'sb-a4p8z26434210@business.example.com'
+
+PAYPAL_TEST = True
+
+# App name
+# mems-prise
+
+# PAYPAL_CLIENT_ID = 'AXSVJ5_sKOu49N0Hf5dfEU6tpTFbwGWPZQ7P4uq-2eoZrcyCEHxY9giJwE4b4-LJZq37wFHlt12VqLyV'
+# AXSVJ5_sKOu49N0Hf5dfEU6tpTFbwGWPZQ7P4uq-2eoZrcyCEHxY9giJwE4b4-LJZq37wFHlt12VqLyV
+# PAYPAL_CLIENT_SECRET = 'EGu0vXG_4Eq9jLtFa37L8IY3uvTA0HhaXmKUORnXtb41yUEfsE1F_09bdV62ehdnTr7of48o_N1bvyGL'
+# EGu0vXG_4Eq9jLtFa37L8IY3uvTA0HhaXmKUORnXtb41yUEfsE1F_09bdV62ehdnTr7of48o_N1bvyGL
+# PAYPAL_MODE = 'sandbox'  # 'sandbox' for testing, 'live' for production
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Sandbox URL
+# https://sandbox.paypal.com
+
+# Sandbox Region
+# KE
+
+# Email
+# sb-a4p8z26434210@business.example.com
+
+# Password
+# AS4:<gDC
