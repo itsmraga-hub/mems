@@ -4,6 +4,7 @@ cffi==1.15.1
 charset-normalizer==3.1.0
 cryptography==41.0.1
 Django==4.2.2
+django-paypal==2.0
 djangorestframework==3.14.0
 fontawesomefree==5.15.4
 idna==3.4
