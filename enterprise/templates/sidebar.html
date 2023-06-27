@@ -9,9 +9,11 @@
     </div>
 
     <ul class="sidebar-container__div-dropdown none" id="sidebar-container__div-dropdown-dashboards">
+      <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+      {% if user.is_admin or user.is_staff %}
       <li><a href="{% url 'admin_dashboard' %}">Admin Dashboard</a></li>
       <li><a href="{% url 'dashboard' %}">Staff Dashboard</a></li>
-      <li><a href="{% url 'dashboard' %}">Client Dashboard</a></li>
+      {% endif %}
     </ul>
   </div>
   <div>
@@ -22,24 +24,28 @@
 
     <ul class="sidebar-container__div-dropdown block" id="sidebar-container__div-dropdown-products">
       <li><a href="{% url 'products' %}">All Products</a></li>
+      {% if user.is_admin or user.is_satff %}
       <li><a href="{% url 'add_product' %}">Add Products</a></li>
       <li><a href="http://">Update Products</a></li>
+      {% endif %}
       <li><a href="http://">Special offers</a></li>
     </ul>
   </div>
   <div>
+    {% if user.is_admin %}
     <div id="sidebar-users" class="hover">
       <h2>System Users</h2>
       <i class="fas fa-caret-down"></i>
     </div>
     <ul class="sidebar-container__div-dropdown none" id="sidebar-container__div-dropdown-users">
-      <li><a href="{% url 'users' %}">All Users</a></li>
-      <li><a href="{% url 'clients' %}">All Clients</a></li>
-      <li><a href="{% url 'staff' %}">All Staff</a></li>
+      <li><a href="{% url 'users' %}">Users</a></li>
+      <li><a href="{% url 'clients' %}">Clients</a></li>
+      <li><a href="{% url 'staff' %}">Staff</a></li>
       <li><a href="{% url 'admins' %}">Admins</a></li>
       <li><a href="">Manage Staff</a></li>
       <li><a href="{% url 'archived_users' %}">Archived Users</a></li>
     </ul>
+    {% endif %}
   </div>
   <div>
     <div id="sidebar-orders" class="hover">
@@ -48,7 +54,9 @@
     </div>
     <ul class="sidebar-container__div-dropdown none" id="sidebar-container__div-dropdown-orders">
       <li><a href="{% url 'orders' %}">All Orders</a></li>
-      <li><a href="http://">Create Order</a></li>
+      {% if user.is_admin %}
+      <li><a href="{% url 'new_order' %}">Create Order</a></li>
+      {% endif %}
       <li><a href="{% url 'pending_orders' %}">Pending Orders</a></li>
       <li><a href="{% url 'completed_orders' %} ">Complete Orders</a></li>
     </ul>
