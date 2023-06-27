@@ -56,7 +56,6 @@ class User(AbstractUser):
         verbose_name="Date Joined", auto_now_add=True)
     email = models.EmailField(
         verbose_name="Email address", max_length=100, unique=True)
-    paypal_address = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(
         verbose_name="Phone Number", max_length=20, null=True)
 
@@ -70,13 +69,6 @@ class User(AbstractUser):
 
     def has_perm(perm, obj=None):
         return True
-
-    # def has_module_perms(app_label):
-        # return True
-
-    # @property
-    # def is_staff(self):
-    #   return self.is_admin
 
 
 class Address(models.Model):
@@ -176,6 +168,9 @@ class Order(models.Model):
         )
         return order_item
 
+    def total_cost(self):
+        return sum([oi.subtotal() for oi in self.orderitem_set.all()])
+
 
 class ProductCategory(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True)
@@ -202,14 +197,19 @@ class Product(models.Model):
 
 class OrderItem(models.Model):
     order = models.ForeignKey(
-        Order, on_delete=models.CASCADE, related_name='items', blank=True)
+        Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True)
+    date_added = models.DateTimeField(auto_now_add=True)
     quantity = models.PositiveIntegerField(default=0)
     price = models.DecimalField(
         max_digits=10, decimal_places=2, default=0, blank=True)
 
     def subtotal(self):
         return self.quantity * self.price
+
+    # def update_quantity(self, quantity):
+    #     self.quantity = self.quantity + quantity
+    #     self.save()
 
     def __str__(self):
         return f"OrderItem #{self.id} for Order #{self.order.id}"
