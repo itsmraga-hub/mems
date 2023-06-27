@@ -171,6 +171,9 @@ class Order(models.Model):
     def total_cost(self):
         return sum([oi.subtotal() for oi in self.orderitem_set.all()])
 
+    def __str__(self):
+        return f"Order #{self.id}: {self.order_code}"
+
 
 class ProductCategory(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True)
@@ -212,7 +215,7 @@ class OrderItem(models.Model):
     #     self.save()
 
     def __str__(self):
-        return f"OrderItem #{self.id} for Order #{self.order.id}"
+        return f"OrderItem #{self.id} for Order #{self.order.id}: {self.order.order_code}"
 
 
 class ExpenseCategory(models.Model):
