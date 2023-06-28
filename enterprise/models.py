@@ -220,18 +220,22 @@ class OrderItem(models.Model):
 
 class ExpenseCategory(models.Model):
     name = models.CharField(max_length=50)
-    ec_code = models.CharField(max_length=50)
+    ec_code = models.CharField(max_length=50, default=str(uuid.uuid4()))
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name_plural = 'ExpenseCategories'
 
 
 class Expense(models.Model):
     description = models.CharField(max_length=255)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    date = models.DateField()
+    e_code = models.CharField(max_length=255, blank=True, null=True)
+    date = models.DateField(auto_now_add=True)
     category = models.ForeignKey(ExpenseCategory, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    staff = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.description

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="form-container">
+  <h1>Add New Expense</h1>
+  <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+      <label for="price">Amount</label>
+      <input type="number" name="amount" required />
+    </div>
+    <div>
+      <label for="id_status">Category:</label>
+      <select id="id_status" name="e_category">
+        {% for category in expense_categories %}
+          <option value="{{category.ec_code}}">{{category.name}}</option>
+        {% endfor %}
+        
+      </select>
+    </div>
+    <div>
+      <label for="description">Expense Description</label>
+      <textarea name="description" id="" cols="30" rows="10"></textarea>
+    </div>
+    <div>
+      <input type="submit" value="Add Expense">
+    </div>
+  </form>
+</section>
+{% endblock %}

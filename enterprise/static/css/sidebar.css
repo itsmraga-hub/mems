@@ -1,16 +1,23 @@
 .sidebar-container {
   width: 25%;
+  min-height: 92vh;
+  height: fit-content;
   font-size: 2em;
-  height: 100vh;
+  /* height: 100%; */
   background-color: #d3d3d3;
+  overflow-x: hidden;
 }
 
 /* Sidebar open and close classes */
 .sidebar-closed {
   width: 10%;
-  font-size: 2em;
+  font-size: 1.25em;
   height: 100vh;
   background-color: #d3d3d3;
+}
+
+.sidebar-closed .sidebar-container__div-dropdown {
+  font-size: 1.15em;
 }
 
 .sidebar-container .sidebar-container__div {
