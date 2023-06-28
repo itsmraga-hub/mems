@@ -21,5 +21,8 @@ $(document).ready(function () {
   $('#sidebar-users').click(() => {
     $('#sidebar-container__div-dropdown-users').toggleClass('block none');
   })
+  $('#sidebar-expenses').click(() => {
+    $('#sidebar-container__div-dropdown-expenses').toggleClass('block none');
+  })
 });
 
