@@ -31,7 +31,10 @@ urlpatterns = [
     path('create-staff', views.create_staff, name='create_staff'),
     path('process-payment/<str:order_code>', views.process_payment, name='process_payment'),
     path('payment-done', views.payment_done, name='payment_done'),
-    path('payment-cancelled', views.payment_cancelled, name='payment_cancelled')
+    path('payment-cancelled', views.payment_cancelled, name='payment_cancelled'),
+    path('expenses/', views.expenses, name='expenses'),
+    path('new_expense', views.new_expense, name='new_expense'),
+    path('expenses/<str:e_code>', views.expense, name='expense')
 ]
 
 if settings.DEBUG:
