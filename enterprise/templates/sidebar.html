@@ -31,8 +31,8 @@
       <li><a href="http://">Special offers</a></li>
     </ul>
   </div>
+  {% if user.is_admin %}
   <div>
-    {% if user.is_admin %}
     <div id="sidebar-users" class="hover">
       <h2>System Users</h2>
       <i class="fas fa-caret-down"></i>
@@ -45,8 +45,8 @@
       <li><a href="">Manage Staff</a></li>
       <li><a href="{% url 'archived_users' %}">Archived Users</a></li>
     </ul>
-    {% endif %}
   </div>
+  {% endif %}
   <div>
     <div id="sidebar-orders" class="hover">
       <h2>Orders</h2>
@@ -61,4 +61,16 @@
       <li><a href="{% url 'completed_orders' %} ">Complete Orders</a></li>
     </ul>
   </div>
+  {% if user.is_admin or user.is_staff %}
+  <div>
+    <div id="sidebar-expenses" class="hover">
+      <h2>Expenses</h2>
+      <i class="fas fa-caret-down"></i>
+    </div>
+    <ul class="sidebar-container__div-dropdown none" id="sidebar-container__div-dropdown-expenses">
+      <li><a href="{% url 'expenses' %}">All Expenses</a></li>
+      <li><a href="{% url 'new_expense' %}">Add expense</a></li>
+    </ul>
+  </div>
+  {% endif %}
 </div>
