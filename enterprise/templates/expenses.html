@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+  <h2>Expenses</h2>
+  <table>
+    <thead>
+      <tr>
+        <td>Expense code</td>
+        <td>Expense date</td>
+        <td>Expense description</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for expense in expenses %}
+      <tr>
+        <td>{{expense.amount}}</td>
+        <td>{{expense.date}}</td>
+        <td>{{expense.description}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}
