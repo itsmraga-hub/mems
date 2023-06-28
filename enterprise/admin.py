@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, Product, Order, Loan, OrderItem, Address, Account, Transaction
+from .models import User, Product, Order, Loan, OrderItem, Address, Account, Transaction, ExpenseCategory, Expense
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -18,6 +18,13 @@ class LoanAdmin(admin.ModelAdmin):
 class OrderItemAdmin(admin.ModelAdmin):
     list_display =['id', 'order', 'product', 'quantity', 'price']
 
+class ExpenseCategoryAdmin(admin.ModelAdmin):
+    list_display =['id', 'name', 'ec_code']
+
+
+class ExpenseAdmin(admin.ModelAdmin):
+    list_display =['id', 'date', 'staff', 'e_code', 'amount']
+
 
 
 
@@ -30,5 +37,7 @@ admin.site.register(OrderItem, OrderItemAdmin)
 admin.site.register(Address)
 admin.site.register(Account)
 admin.site.register(Transaction)
+admin.site.register(ExpenseCategory, ExpenseCategoryAdmin)
+admin.site.register(Expense, ExpenseAdmin)
 # admin.site.register()
 # admin.site.register()
