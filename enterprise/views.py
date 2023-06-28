@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -11,7 +11,7 @@ import json
 
 
 # Import models
-from .models import Product, Order, OrderItem, ExpenseCategory, Expense, User
+from .models import Product, Order, OrderItem, ExpenseCategory, Expense, User, Loan, Account
 
 # Import project app logic
 from .add_product import SaveProduct
@@ -19,6 +19,7 @@ from .create_account import CreateClientAccount
 from .create_order import CreateOrder
 from .create_admin import CreateAdmin
 from .create_staff import CreateStaffAccount
+from .create_expense import CreateExpense
 
 
 # Create your views here.
@@ -106,25 +107,43 @@ def products(request):
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
+@login_required
 def orders(request):
     try:
-        orders = Order.objects.all()
+        orders = []
+        if request.user.is_staff:
+            orders = Order.objects.all()
+        else:
+            orders = Order.objects.filter(client=request.user)
+        
         return render(request, 'orders.html', {'orders': orders})
     except Exception as e:
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
+@login_required
 def pending_orders(request):
     try:
-        orders = Order.objects.filter(status='pending')
+        # orders = Order.objects.filter(status='pending')
+        orders = []
+        if request.user.is_staff:
+            orders = Order.objects.filter(status='pending')
+        else:
+            orders = Order.objects.filter(client=request.user, status='pending')
         return render(request, 'orders.html', {'orders': orders})
     except Exception as e:
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
+@login_required
 def completed_orders(request):
     try:
-        orders = Order.objects.filter(status='completed')
+        # orders = Order.objects.filter(status='completed')
+        orders = []
+        if request.user.is_staff:
+            orders = Order.objects.filter(status='completed')
+        else:
+            orders = Order.objects.filter(client=request.user, status='completed')
         return render(request, 'orders.html', {'orders': orders})
     except Exception as e:
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
@@ -323,3 +342,37 @@ def payment_done(request):
 @csrf_exempt
 def payment_cancelled(request):
     return render(request, 'payment_cancelled.html')
+
+
+def expenses(request):
+    try:
+        expenses = Expense.objects.all()
+        return render(request, 'expenses.html', {'expenses': expenses})
+    except Exception as e:
+        return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': str(e)}}))
+
+
+def expense(request, e_code):
+    expense = get_object_or_404(Expense, e_code=e_code)
+    return render(request, 'expense.html', {'expense': expense})
+
+def new_expense(request):
+    if request.method == 'POST':
+        description = request.POST.get('description')
+        amount = request.POST.get('amount')
+        category = request.POST.get('e_category')
+        staff = request.user
+
+        expense = CreateExpense.create_new_expense(user, description, amount, category, staff)
+        print(expense.__dict__)
+
+        return redirect(reverse('expense', kwargs={'e_code': expense.e_code}))
+
+    expense_categories = ExpenseCategory.objects.all()
+
+    return render(request, 'new_expense.html', {'expense_categories': expense_categories})
+
+
+
+def expense_category(request):
+    pass
