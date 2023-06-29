@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="form-container sign-form login" >
+<section class="form-container sign-form login">
   <form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div>
@@ -14,6 +14,10 @@
     </div>
     <div>
       <input type="submit" value="Log in">
+    </div>
+    <div>
+      <p>Forgot your password <a href="{% url 'password_reset' %}">Reset password</a></p>
+      <p>Don't have an Account? <a href="{% url 'client_signup' %}">Join now</a></p>
     </div>
   </form>
 </section>
