@@ -152,6 +152,20 @@ PAYPAL_RECEIVER_EMAIL = 'sb-a4p8z26434210@business.example.com'
 
 PAYPAL_TEST = True
 
+# Email Settings
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
+
+# EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_PORT = 25
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'itsmraga@gmail.com'
+EMAIL_HOST_PASSWORD = ''
+
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # App name
 # mems-prise
 
