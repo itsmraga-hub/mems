@@ -11,7 +11,7 @@ urlpatterns = [
     path('clients/signup', views.client_signup, name='client_signup'),
     path('clients/login', views.client_login, name='client_login'),
     path('signout', LogoutView.as_view(), name='signout'),
-    path('admin_dashboard', views.admin_dashboard, name='admin_dashboard'),
+    path('admin-dashboard', views.admin_dashboard, name='admin_dashboard'),
     path('products/new', views.add_product, name='add_product'),
     path('products', views.products, name='products'),
     path('orders', views.orders, name='orders'),
@@ -26,7 +26,7 @@ urlpatterns = [
     path('user/<str:user_id>', views.user, name='user'),
     path('staff', views.system_staff, name='staff'),
     path('clients', views.system_clients, name='clients'),
-    path('archived_users', views.system_archived_users, name='archived_users'),
+    path('archived-users', views.system_archived_users, name='archived_users'),
     path('create-admin', views.create_admin, name='create_admin'),
     path('create-staff', views.create_staff, name='create_staff'),
     path('process-payment/<str:order_code>', views.process_payment, name='process_payment'),
@@ -34,9 +34,19 @@ urlpatterns = [
     path('payment-cancelled', views.payment_cancelled, name='payment_cancelled'),
     path('expenses/', views.expenses, name='expenses'),
     path('new_expense', views.new_expense, name='new_expense'),
-    path('expenses/<str:e_code>', views.expense, name='expense')
+    path('expenses/<str:e_code>', views.expense, name='expense'),
+    path('profile', views.profile, name='profile'),
+    path('password-reset/', views.password_reset, name='password_reset'),
+    path('password-reset/done/', views.password_reset_done, name='password_reset_done'),
+    path('password-reset-confirm/<str:uidb64>/<str:token>', views.password_reset_confirm, name='password_reset_confirm'),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,
                           document_root=settings.STATIC_ROOT)
+
+
+# path('password-reset/', PasswordResetView.as_view(template_name='password_reset.html'),name='password_reset'),
+# path('password-reset/done/', PasswordResetDoneView.as_view(template_name='password_reset_done.html'),name='password_reset_done'),
+# path('password-reset-confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'),name='password_reset_confirm'),
+# path('password-reset-complete/',PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'),name='password_reset_complete'),
