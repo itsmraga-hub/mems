@@ -20,9 +20,10 @@
         <div class="dropdown-content none" id="dropdown-content">
           <h4>{{ user.first_name }} {{ user.last_name }}</h4>
           <ul>
-            <li><a href="http://">Profile</a></li>
+            <li><a href="{% url 'profile' %}">Profile</a></li>
+            {% if user.is_admin %}
             <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
-            <li><a href="http://">Profile</a></li>
+            {% endif %}
             <li><a href="{% url 'signout' %}">Sign out</a></li>
           </ul>
         </div>
