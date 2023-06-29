@@ -4,10 +4,15 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.conf import settings
+from django.core.mail import send_mail
 from django.urls import reverse
-from decimal import Decimal
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib import messages
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import smart_bytes, smart_str
 from paypal.standard.forms import PayPalPaymentsForm
 import json
+from decimal import Decimal
 
 
 # Import models
@@ -376,3 +381,68 @@ def new_expense(request):
 
 def expense_category(request):
     pass
+
+
+@login_required
+def profile(request):
+    user = request.user
+    name = user.first_name + user.last_name
+
+    return render(request, 'profile.html', {'user': user, 'name': name})
+
+
+def password_reset(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            user = None
+        if user:
+            # Generate the password reset token
+            # uid = urlsafe_base64_encode(smart_bytes(user.pk))
+            uid = urlsafe_base64_encode(str(user.pk).encode())
+            token = default_token_generator.make_token(user)
+
+            reset_url = request.build_absolute_uri(reverse('password_reset_confirm', args=[user.pk, token]))
+            subject = 'Password Reset'
+            message = f'Click the link below to reset your password:\n\n{reset_url}'
+            send_mail(subject, message, 'itsmraga@gmail.com', [email])
+
+            messages.success(request, 'Password reset instructions have been sent to your email.')
+            return redirect('client_login')
+        else:
+            messages.error(request, 'Invalid email address.')
+    
+    return render(request, 'password_reset.html')
+
+
+def password_reset_confirm(request, uidb64, token):
+    try:
+        # uid = smart_str(urlsafe_base64_decode(uidb64))
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=uid)
+        print('William')
+        if default_token_generator.check_token(user, token):
+            if request.method == 'POST':
+                new_password1 = request.POST.get('new_password1')
+                new_password2 = request.POST.get('new_password2')
+                if new_password1 == new_password2:
+                    user.set_password(new_password1)
+                    user.save()
+                    messages.success(request, 'Your password has been reset successfully. You can now login.')
+                    return redirect('client_login')
+                else:
+                    messages.error(request, 'Passwords do not match.')
+            return render(request, 'password_reset_confirm.html')
+        else:
+            messages.error(request, 'Invalid reset link. Please try again.')
+    # except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+    except Exception as e:
+        return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': str(e)}}))
+        # messages.error(request, 'Invalid reset link. Please try again.'
+
+
+def password_reset_done(request):
+    return render(request, 'password_reset_done.html')
+

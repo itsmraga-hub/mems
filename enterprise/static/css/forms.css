@@ -76,6 +76,17 @@
   font-weight: bold;
 }
 
+.form-container form div button {
+  width: fit-content;
+  align-self: center;
+  padding: 1rem;
+  font-weight: bold;
+}
+
+.form-container form div button:hover {
+  cursor: pointer;
+}
+
 .form-container form div input[type='submit']:hover {
   cursor: pointer;
 }
