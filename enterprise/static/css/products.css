@@ -65,3 +65,52 @@
 .p-container .add-to-cart:hover {
   cursor: pointer;
 }
+
+.up-container {
+  width: 100%;
+  font-size: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0 0 0.5rem;
+  border-bottom: 1px solid #bbb;
+  box-shadow: inset #bbb;
+}
+
+.up-container h2 {
+  font-size: 2em;
+}
+
+table {
+  border: 1px solid #bbb;
+}
+
+table thead,
+table tbody {
+  font-size: 1.25em;
+}
+
+table tbody tr {
+  /* padding: 1em; */
+}
+
+table tr td {
+  padding: 0.25rem;
+}
+
+table tr td input {
+  padding: 0.5rem;
+  outline: none;
+  border: none;
+}
+
+table tr td input[type='submit'] {
+  border-radius: 8px;
+}
+
+table tr td input[type='submit']:hover {
+  cursor: pointer;
+}
+
+
