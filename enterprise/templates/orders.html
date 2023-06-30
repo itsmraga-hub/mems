@@ -1,17 +1,53 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<section class="products-container" id="products-container">
-  <!-- <h1>Products</h1> -->
-  {% for order in orders %}
-  <div class="o-container">
-    <div class="container product-container" id="{{order.order_code}}">
-      <a href="{% url 'order' order.order_code %}">Order #{{order.id}}</a>
-      <p>Order code: {{order.order_code}}</p>
-      <p class="product-name">{{order.status}}</p>
-      <p class="product-price">{{order.payment_method}}</p>
-    </div>
-  </div>
-  {% endfor %}
+<section class="up-container" id="products-container">
+  {% if orders %}
+  <h2>Orders</h2>
+  <table border="|">
+    <thead>
+      <tr>
+        <th>Order</th>
+        <th>Total</th>
+        <th>Paid?</th>
+        <th>Shipping Address</th>
+        <th>Status</th>
+        {% if user.is_admin %}
+        <th>Client</th>
+        <th>Process</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr>
+        <td><a href="{% url 'order' order.order_code %}">Order #{{order.id}}</a></td>
+        <td>
+          {{order.total_amount}}
+        </td>
+        <td>
+          {{order.paid}}
+        </td>
+        <td>
+          {{order.shipping_address}}
+        </td>
+        <td>
+          {{order.status}}
+        </td>
+        {% if user.is_admin %}
+        <td>
+          <a href="{% url 'user' order.client.user_id %}">{{order.client}}</a>
+        </td>
+        <td>
+          <a href="{% url 'user' order.client.user_id %}">Process</a>
+        </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <h2>No orders made yet!!!</h2>
+  {% endif %}
 </section>
 {% endblock content %}
