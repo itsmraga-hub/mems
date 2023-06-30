@@ -1,14 +1,49 @@
 {% extends "base.html" %}
 {% block content %}
-<section>
+<section class="up-container">
+  {% if users %}
+    
   <h2>All Users</h2>
-  <div class="users-container">
-    <ul class="users">
+  <table border="|">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th>Date Joined</th>
+        <th>Role</th>
+      </tr>
+    </thead>
+    <tbody>
       {% for user in users %}
-      <a href="{% url 'user' user.user_id %}">{{user}}</a>
-      <p>{{user.user_id}}</p>
+      <tr>
+        <td><a href="{% url 'user' user.user_id %}">{{user}}</a></td>
+        <td>
+          {{user.email}}
+        </td>
+        <td>
+          {{user.phone}}
+        </td>
+        <td>
+          {{user.date_joined}}
+        </td>
+        <td>
+          {% if user.is_admin %}
+          Admin
+          {% elif user.is_staff %}
+          Staff
+          {% else %}
+          Client
+          {% endif %}
+
+        </td>
+
+      </tr>
       {% endfor %}
-    </ul>
-  </div>
+    </tbody>
+  </table>
+  {% else %}
+  <h2>No users added yet!!</h2>
+  {% endif %}
 </section>
 {% endblock %}
