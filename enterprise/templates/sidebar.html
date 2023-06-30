@@ -26,7 +26,7 @@
       <li><a href="{% url 'products' %}">All Products</a></li>
       {% if user.is_admin or user.is_satff %}
       <li><a href="{% url 'add_product' %}">Add Products</a></li>
-      <li><a href="http://">Update Products</a></li>
+      <li><a href="{% url 'manage_products' %}">Manage Products</a></li>
       {% endif %}
       <li><a href="http://">Special offers</a></li>
     </ul>
