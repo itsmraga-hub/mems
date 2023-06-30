@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="form-container" >
+  <h1>Update {{product.name}}</h1>
+  <form action="" method="put" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+      <label for="product_name">Product name</label>
+      <input type="text" name="product_name" value="{{product.name}}" required />
+    </div>
+    <div>
+      <label for="price">Price</label>
+      <input type="number" name="price" value="{{product.price}}" required />
+    </div>
+    <div>
+      <label for="category">Category</label>
+      <input type="text" name="category" value="{{product.category}}" required />
+    </div>
+    <div>
+      <label for="image">Product Image</label>
+      <input type="file" name="image" value="{{product.image.url}}" required />
+    </div>
+    <div>
+      <label for="brand">Brand name</label>
+      <input type="text" name="brand" value="{{product.brand}}" required />
+    </div>
+    <div>
+      <label for="quantity">Copies Available</label>
+      <input type="number" name="quantity" value="{{product.quantity}}" required />
+    </div>
+    <div>
+      <label for="description">Product Description</label>
+      <textarea name="description" id="" cols="30" rows="10" value="">{{product.description}}</textarea>
+    </div>
+    <div>
+      <input type="submit" value="Update">
+    </div>
+  </form>
+</section>
+{% endblock %}
