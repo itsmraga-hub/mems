@@ -70,6 +70,9 @@ class User(AbstractUser):
     def has_perm(perm, obj=None):
         return True
 
+    class Meta:
+        ordering = ['id']
+
 
 class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
