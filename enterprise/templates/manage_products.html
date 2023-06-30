@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="up-container">
+  <h2>Update Products</h2>
+  <table border="|">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+      <tr>
+        <td><a href="{% url 'update_product' product.p_code %}">{{ product.name }}</a></td>
+        <td>
+          <form action="{% url 'manage_products' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="quantity" value="{{ product.quantity }}">
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <input type="submit" name="submit" value="Update Quantity">
+          </form>
+        </td>
+        <td>
+          <form action="" method="POST">
+            {% csrf_token %}
+            <input type="text" name="price" value="{{ product.price }}">
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <input type="submit" name="submit" value="Update Price">
+          </form>
+        </td>
+
+        <td>
+          <form action="" method="delete">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <input type="submit" name="submit" value="Delete">
+          </form>
+        </td>
+        
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

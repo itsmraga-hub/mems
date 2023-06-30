@@ -70,6 +70,9 @@ class User(AbstractUser):
     def has_perm(perm, obj=None):
         return True
 
+    class Meta:
+        ordering = ['id']
+
 
 class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -146,8 +149,6 @@ class Order(models.Model):
     client = models.ForeignKey(User, on_delete=models.CASCADE, default='')
     order_date = models.DateTimeField(
         verbose_name='Date of order', auto_now_add=True, blank=True)
-    total_amount = models.DecimalField(
-        max_digits=10, decimal_places=2, default=0)
     status = models.CharField(
         max_length=30, choices=STATUS_CHOICES, default='pending')
     payment_method = models.CharField(
@@ -174,6 +175,9 @@ class Order(models.Model):
     def __str__(self):
         return f"Order #{self.id}: {self.order_code}"
 
+    class Meta:
+        ordering = ['id']
+
 
 class ProductCategory(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True)
@@ -196,6 +200,9 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['id']
 
 
 class OrderItem(models.Model):
