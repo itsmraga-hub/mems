@@ -12,6 +12,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import smart_bytes, smart_str
 from paypal.standard.forms import PayPalPaymentsForm
 import json
+import base64
 from decimal import Decimal
 
 
@@ -40,6 +41,9 @@ def dashboard(request):
 
 @login_required
 def admin_dashboard(request):
+    loans = Loan.objects.all()
+    expenses = Expense.objects.all()
+
     return render(request, 'admin_dashboard.html')
 
 
@@ -110,6 +114,34 @@ def products(request):
         return render(request, 'products.html', {'products': products})
     except Exception as e:
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+
+@login_required
+def manage_products(request):
+    products = Product.objects.all()
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        product = Product.objects.get(id=int(product_id))
+        price = request.POST.get('price')
+        quantity = request.POST.get('quantity')
+        if price is None:
+            price = product.price
+        elif quantity is None:
+            quantity = product.quantity
+        print(product.__dict__)
+        SaveProduct.update_product_price_quantity(product, quantity, price)
+
+
+    return render(request, 'manage_products.html', {'products': products})
+
+
+@login_required
+def update_product(request, p_code):
+    product = get_object_or_404(Product, p_code=p_code)
+    if request.method == 'POST':
+        SaveProduct.update_product_full()
+        return redirect('product', args=[product.p_code])
+    return render(request, 'update_product.html', {'product': product})
 
 
 @login_required
@@ -400,11 +432,11 @@ def password_reset(request):
             user = None
         if user:
             # Generate the password reset token
-            # uid = urlsafe_base64_encode(smart_bytes(user.pk))
-            uid = urlsafe_base64_encode(str(user.pk).encode())
+            user_id = user.user_id
+            # uid = base64.urlsafe_b64decode(uid.encode()).decode('latin-1')
             token = default_token_generator.make_token(user)
 
-            reset_url = request.build_absolute_uri(reverse('password_reset_confirm', args=[user.pk, token]))
+            reset_url = request.build_absolute_uri(reverse('password_reset_confirm', kwargs={'uidb64': user_id, 'token': token}))
             subject = 'Password Reset'
             message = f'Click the link below to reset your password:\n\n{reset_url}'
             send_mail(subject, message, 'itsmraga@gmail.com', [email])
@@ -419,10 +451,9 @@ def password_reset(request):
 
 def password_reset_confirm(request, uidb64, token):
     try:
-        # uid = smart_str(urlsafe_base64_decode(uidb64))
-        uid = urlsafe_base64_decode(uidb64).decode()
-        user = User.objects.get(pk=uid)
-        print('William')
+        user = User.objects.get(user_id=uidb64)
+        # uidb64 = uidb64
+        # token = token
         if default_token_generator.check_token(user, token):
             if request.method == 'POST':
                 new_password1 = request.POST.get('new_password1')
@@ -434,7 +465,7 @@ def password_reset_confirm(request, uidb64, token):
                     return redirect('client_login')
                 else:
                     messages.error(request, 'Passwords do not match.')
-            return render(request, 'password_reset_confirm.html')
+            return render(request, 'password_reset_confirm.html', {'token': token, 'uidb64': uidb64})
         else:
             messages.error(request, 'Invalid reset link. Please try again.')
     # except (TypeError, ValueError, OverflowError, User.DoesNotExist):
