@@ -28,7 +28,7 @@ class SaveProduct:
     except Exception as e:
       return HttpResponse(json.dumps({"status": "fail", "data": {"message": str(e)}}))
 
-  def update_product(product, quantity, price):
+  def update_product_price_quantity(product, quantity, price):
     product.quantity = quantity
     product.price = price
     product.save()
