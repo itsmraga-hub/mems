@@ -92,11 +92,11 @@ table tbody {
 }
 
 table tbody tr {
-  /* padding: 1em; */
+  padding: 0 1em;
 }
 
 table tr td {
-  padding: 0.25rem;
+  padding: 0.25rem 1rem;
 }
 
 table tr td input {
