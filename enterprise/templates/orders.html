@@ -15,6 +15,7 @@
         {% if user.is_admin %}
         <th>Client</th>
         <th>Process</th>
+        <th>Processed by</th>
         {% endif %}
       </tr>
     </thead>
@@ -26,7 +27,11 @@
           {{order.total_amount}}
         </td>
         <td>
-          {{order.paid}}
+          {% if order.paid %}
+          Paid
+          {% else %}
+          Not paid
+          {% endif %}
         </td>
         <td>
           {{order.shipping_address}}
@@ -34,13 +39,18 @@
         <td>
           {{order.status}}
         </td>
-        {% if user.is_admin %}
+        {% if user.is_staff and order.paid or user.is_admin %}
         <td>
           <a href="{% url 'user' order.client.user_id %}">{{order.client}}</a>
         </td>
+        {% if user.is_admin %}
         <td>
-          <a href="{% url 'user' order.client.user_id %}">Process</a>
+          <a href="{% url 'process_order' order.order_code %}">Process Order</a>
         </td>
+        <td>
+          <a href="{% url 'user' order.staff.user_id %}">{{order.staff}}</a>
+        </td>
+        {% endif %}
         {% endif %}
       </tr>
       {% endfor %}
