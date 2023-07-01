@@ -26,6 +26,7 @@ from .create_order import CreateOrder
 from .create_admin import CreateAdmin
 from .create_staff import CreateStaffAccount
 from .create_expense import CreateExpense
+from .process_order import ProcessOrder
 
 
 # Create your views here.
@@ -336,6 +337,18 @@ def order(request, order_code):
         if request.method == 'POST':
           return redirect('process_payment')
         return render(request, 'order.html', {'order': order, 'order_items': order_items})
+    except Exception as e:
+        return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+
+def process_order(request, order_code):
+    try:
+        order = get_object_or_404(Order, order_code=order_code)
+        if request.method == 'POST':
+            status = request.POST.get('status')
+            print(status)
+            ProcessOrder.process_order(order, request.user, status)
+        return render(request, 'process_order.html', {'order': order})
     except Exception as e:
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
