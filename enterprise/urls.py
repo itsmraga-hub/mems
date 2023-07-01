@@ -22,6 +22,7 @@ urlpatterns = [
     path('add_to_order', views.add_to_order, name='add_to_order'),
     path('orders/<str:order_code>', views.order, name='order'),
     path('order/', views.new_order, name='new_order'),
+    path('order/process/<str:order_code>', views.process_order, name='process_order'),
     path('confirm-order', views.confirm_order, name='confirm_order'),
     path('users', views.system_users, name='users'),
     path('admins', views.system_admins, name='admins'),

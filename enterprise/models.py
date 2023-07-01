@@ -159,6 +159,7 @@ class Order(models.Model):
     paid_amount = models.DecimalField(
         max_digits=10, decimal_places=2, default=0)
     paid = models.BooleanField(default=False)
+    staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name='staff', null=True)
 
     def add_order_item_to_order(self, product, quantity, price):
         order_item = OrderItem.objects.create(
