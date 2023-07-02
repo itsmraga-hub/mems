@@ -232,9 +232,13 @@ def add_to_order(request):
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
+@login_required
 def user(request, user_id):
-    user = User.objects.get(user_id=user_id)
-    return render(request, 'user.html', {'user': user})
+    user = get_object_or_404(User, user_id=user_id)
+    orders = Order.objects.filter(client=request.user)
+    # orders = get_list_or_404(Order, client=request.user)
+    num_orders = len(orders)
+    return render(request, 'user.html', {'user': user, 'num_orders': num_orders})
 
 
 def system_users(request):
