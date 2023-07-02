@@ -87,7 +87,8 @@ table {
 }
 
 table thead,
-table tbody {
+table tbody,
+table tfoot {
   font-size: 1.25em;
 }
 

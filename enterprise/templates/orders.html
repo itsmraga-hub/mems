@@ -48,7 +48,12 @@
           <a href="{% url 'process_order' order.order_code %}">Process Order</a>
         </td>
         <td>
-          <a href="{% url 'user' order.staff.user_id %}">{{order.staff}}</a>
+          {# url 'user' order.staff.user_id #}
+          {% if order.staff %}
+          <a href="">{{order.staff}}</a>
+          {% else %}
+          Awaiting Processing
+          {% endif %}
         </td>
         {% endif %}
         {% endif %}

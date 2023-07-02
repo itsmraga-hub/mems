@@ -1,24 +1,33 @@
 {% extends "base.html" %}
 {% block content %}
-<section>
-  <h2>Expenses</h2>
-  <table>
+<section class="up-container">
+  <h2>Expenses for the month of {{month}}</h2>
+  <p>{{date}}</p>
+  <table border="|">
     <thead>
       <tr>
-        <td>Expense code</td>
-        <td>Expense date</td>
-        <td>Expense description</td>
+        <td>Expense Code</td>
+        <td>Expense Date</td>
+        <td>Expense Description</td>
+        <td>Expense Amount</td>
       </tr>
     </thead>
     <tbody>
       {% for expense in expenses %}
       <tr>
-        <td>{{expense.amount}}</td>
+        <td>{{expense.e_code}}</td>
         <td>{{expense.date}}</td>
         <td>{{expense.description}}</td>
+        <td>{{expense.amount}}</td>
       </tr>
       {% endfor %}
     </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3">Total this month</td>
+        <td>{{total}}</td>
+      </tr>
+    </tfoot>
   </table>
 </section>
 {% endblock %}

@@ -14,7 +14,8 @@ from paypal.standard.forms import PayPalPaymentsForm
 import json
 import base64
 from decimal import Decimal
-
+from datetime import datetime as dt
+import datetime
 
 # Import models
 from .models import Product, Order, OrderItem, ExpenseCategory, Expense, User, Loan, Account
@@ -231,9 +232,13 @@ def add_to_order(request):
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
+@login_required
 def user(request, user_id):
-    user = User.objects.get(user_id=user_id)
-    return render(request, 'user.html', {'user': user})
+    user = get_object_or_404(User, user_id=user_id)
+    orders = Order.objects.filter(client=request.user)
+    # orders = get_list_or_404(Order, client=request.user)
+    num_orders = len(orders)
+    return render(request, 'user.html', {'user': user, 'num_orders': num_orders})
 
 
 def system_users(request):
@@ -395,11 +400,12 @@ def payment_cancelled(request):
 
 
 def expenses(request):
-    try:
-        expenses = Expense.objects.all()
-        return render(request, 'expenses.html', {'expenses': expenses})
-    except Exception as e:
-        return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': str(e)}}))
+    expenses = get_list_or_404(Expense)
+    time = dt.now()
+    month = time.strftime("%B %Y")
+    date = datetime.date.today()
+
+    return render(request, 'expenses.html', {'expenses': expenses, 'month': month})
 
 
 def expense(request, e_code):

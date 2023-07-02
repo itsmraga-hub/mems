@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-<section>
-  <h2>User</h2>
+<section class="up-container">
+  <h2>{{user}} Profile</h2>
   <div class="user-container">
-    <p>{{user}}</p>
+    <p>Email: <span>{{user.username}}</span></p>
+    <p>Phone Number: <span>{{user.phone}}</span></p>
+    <p>Joined: <span>{{user.date_joined}}</span></p>
+    <p>Total Orders: <span>{{num_orders}}</span></p>
   </div>
 </section>
 {% endblock %}
