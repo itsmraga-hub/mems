@@ -48,7 +48,8 @@
           <a href="{% url 'process_order' order.order_code %}">Process Order</a>
         </td>
         <td>
-          <a href="{% url 'user' order.staff.user_id %}">{{order.staff}}</a>
+          {# url 'user' order.staff.user_id #}
+          <a href="">{{order.staff}}</a>
         </td>
         {% endif %}
         {% endif %}
