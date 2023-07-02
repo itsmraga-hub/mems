@@ -14,7 +14,8 @@ from paypal.standard.forms import PayPalPaymentsForm
 import json
 import base64
 from decimal import Decimal
-
+from datetime import datetime as dt
+import datetime
 
 # Import models
 from .models import Product, Order, OrderItem, ExpenseCategory, Expense, User, Loan, Account
@@ -395,11 +396,12 @@ def payment_cancelled(request):
 
 
 def expenses(request):
-    try:
-        expenses = Expense.objects.all()
-        return render(request, 'expenses.html', {'expenses': expenses})
-    except Exception as e:
-        return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': str(e)}}))
+    expenses = get_list_or_404(Expense)
+    time = dt.now()
+    month = time.strftime("%B %Y")
+    date = datetime.date.today()
+
+    return render(request, 'expenses.html', {'expenses': expenses, 'month': month})
 
 
 def expense(request, e_code):
