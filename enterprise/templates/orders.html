@@ -49,7 +49,11 @@
         </td>
         <td>
           {# url 'user' order.staff.user_id #}
+          {% if order.staff %}
           <a href="">{{order.staff}}</a>
+          {% else %}
+          Awaiting Processing
+          {% endif %}
         </td>
         {% endif %}
         {% endif %}
