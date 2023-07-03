@@ -16,9 +16,12 @@ import base64
 from decimal import Decimal
 from datetime import datetime as dt
 import datetime
+from django.db.models import Q
+from django.core.paginator import Paginator
+
 
 # Import models
-from .models import Product, Order, OrderItem, ExpenseCategory, Expense, User, Loan, Account
+from .models import Product, Order, OrderItem, ExpenseCategory, Expense, User, Loan, Account, ProductCategory
 
 # Import project app logic
 from .add_product import SaveProduct
@@ -31,9 +34,11 @@ from .process_order import ProcessOrder
 
 
 # Create your views here.
+@login_required
 def homeview(request):
     # return HttpResponse('index.html')
-    return render(request, 'index.html')
+    user = request.user
+    return render(request, 'index.html', {'user': user})
 
 
 @login_required
@@ -93,6 +98,7 @@ def client_login(request):
 
 @login_required
 def add_product(request):
+    categories = ProductCategory.objects.all()
     if request.method == 'POST':
         name = request.POST.get('product_name')
         description = request.POST.get('description')
@@ -100,22 +106,61 @@ def add_product(request):
         quantity = request.POST.get('quantity')
         image = request.FILES.get('image')
         brand = request.POST.get('brand')
-        category = request.POST.get('category')
+        # category = request.POST.get('category')
+        category_ids = request.POST.getlist('categories')
 
         SaveProduct.save_new_product(
-            '', name, description, price, image, quantity, brand, category)
+            name, description, price, image, quantity, brand, category_ids)
         return redirect('products')
 
-    return render(request, 'add_product.html')
+    return render(request, 'add_product.html', {'categories': categories})
 
+
+@login_required
+def add_product_category(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+
+        context = SaveProduct.create_product_category(name=name)
+        return render(request, 'add_product_category.html', {'errors': context})
+    return render(request, 'add_product_category.html')
 
 # @login_required
+
+@csrf_exempt
 def products(request):
     try:
         products = Product.objects.all()
-        return render(request, 'products.html', {'products': products})
+
+        if request.method == 'POST':
+            query = request.POST.get('query')
+            products = Product.objects.filter(
+            Q(name__icontains=query) | Q(brand__icontains=query))
+            paginator = Paginator(products, 12)
+            page_number = request.GET.get('page')
+            if page_number is None:
+                page_number = 1
+            page_obj = paginator.get_page(page_number)
+            # return redirect(reverse('products'))
+            return render(request, 'products.html', {'products': page_obj})
+        else:
+            products = Product.objects.all()
+            paginator = Paginator(products, 12)
+            page_number = request.GET.get('page')
+            if page_number is None:
+                page_number = 1
+            page_obj = paginator.get_page(page_number)
+            # print(page_obj)
+            return render(request, 'products.html', {'products': page_obj})
     except Exception as e:
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+
+def search_products(request):
+    query = request.GET.get('query', '')
+    results = Product.objects.filter(
+        Q(name__icontains=query) | Q(brand__icontains=query))
+    return render(request, 'products.html', {'results': results})
 
 
 @login_required
@@ -132,7 +177,6 @@ def manage_products(request):
             quantity = product.quantity
         print(product.__dict__)
         SaveProduct.update_product_price_quantity(product, quantity, price)
-
 
     return render(request, 'manage_products.html', {'products': products})
 
@@ -154,7 +198,7 @@ def orders(request):
             orders = Order.objects.all()
         else:
             orders = Order.objects.filter(client=request.user)
-        
+
         return render(request, 'orders.html', {'orders': orders})
     except Exception as e:
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
@@ -168,7 +212,8 @@ def pending_orders(request):
         if request.user.is_staff:
             orders = Order.objects.filter(status='pending')
         else:
-            orders = Order.objects.filter(client=request.user, status='pending')
+            orders = Order.objects.filter(
+                client=request.user, status='pending')
         return render(request, 'orders.html', {'orders': orders})
     except Exception as e:
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
@@ -182,7 +227,8 @@ def completed_orders(request):
         if request.user.is_staff:
             orders = Order.objects.filter(status='completed')
         else:
-            orders = Order.objects.filter(client=request.user, status='completed')
+            orders = Order.objects.filter(
+                client=request.user, status='completed')
         return render(request, 'orders.html', {'orders': orders})
     except Exception as e:
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
@@ -245,7 +291,7 @@ def system_users(request):
     try:
         users = list(User.objects.all())
 
-        return render(request, 'users.html', {'users': users})
+        return render(request, 'users.html', {'users': users, 'u': 'Users'})
     except Exception as e:
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
@@ -255,7 +301,7 @@ def system_admins(request):
         users = User.objects.filter(is_admin=True)
         # print(order_items)
 
-        return render(request, 'users.html', {'users': users})
+        return render(request, 'users.html', {'users': users, 'u': 'Admins'})
     except Exception as e:
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
@@ -265,7 +311,7 @@ def system_clients(request):
         users = User.objects.filter(is_staff=False)
         # print(order_items)
 
-        return render(request, 'users.html', {'users': users})
+        return render(request, 'users.html', {'users': users, 'u': 'Clients'})
     except Exception as e:
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
@@ -275,7 +321,7 @@ def system_staff(request):
         users = User.objects.filter(is_staff=True)
         # print(order_items)
 
-        return render(request, 'users.html', {'users': users})
+        return render(request, 'users.html', {'users': users, 'u': 'Staff'})
     except Exception as e:
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
@@ -285,7 +331,7 @@ def system_archived_users(request):
         users = User.objects.filter(is_archived=True)
         # print(order_items)
 
-        return render(request, 'users.html', {'users': users})
+        return render(request, 'users.html', {'users': users, 'u': 'Archived users'})
     except Exception as e:
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
@@ -340,7 +386,7 @@ def order(request, order_code):
         order = Order.objects.get(order_code=order_code)
         order_items = OrderItem.objects.filter(order_id=order.id)
         if request.method == 'POST':
-          return redirect('process_payment')
+            return redirect('process_payment')
         return render(request, 'order.html', {'order': order, 'order_items': order_items})
     except Exception as e:
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
@@ -359,35 +405,36 @@ def process_order(request, order_code):
 
 
 class CustomPayPalPaymentsForm(PayPalPaymentsForm):
-  def get_html_submit_element(self):
-    return """<button type="submit">Continue on PayPal website</button>"""
+    def get_html_submit_element(self):
+        return """<button type="submit">Continue on PayPal website</button>"""
 
 
 def process_payment(request, order_code):
-  try:
-    order = get_object_or_404(Order, order_code=order_code)
-    # host = request.get_host()
-    order.total_amount = order.total_cost()
-    order.save()
+    try:
+        order = get_object_or_404(Order, order_code=order_code)
+        # host = request.get_host()
+        order.total_amount = order.total_cost()
+        order.save()
 
-    paypal_dict = {
-      'business': settings.PAYPAL_RECEIVER_EMAIL,
-      'amount': '%.2f' % order.total_amount,
-      'item_name': 'Order {}'.format(order.order_code),
-      'invoice': str(order.order_code),
-      'currency_code': 'USD',
-      "item_name": "Order #{}".format(order.id),
-      "invoice": "unique-invoice-id",
-      "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
-      "return": request.build_absolute_uri(reverse('payment_done')),
-      "cancel_return": request.build_absolute_uri(reverse('payment_cancelled')),
-      "custom": "{}".format(order.order_code),
-      "invoice": "{}".format(order.order_code)
-    }
-    form = CustomPayPalPaymentsForm(initial=paypal_dict)
-    return render(request, 'process_payment.html', {'order': order, 'form': form})
-  except Exception as e:
-    return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': str(e)}}))
+        paypal_dict = {
+            'business': settings.PAYPAL_RECEIVER_EMAIL,
+            'amount': '%.2f' % order.total_amount,
+            'item_name': 'Order {}'.format(order.order_code),
+            'invoice': str(order.order_code),
+            'currency_code': 'USD',
+            "item_name": "Order #{}".format(order.id),
+            "invoice": "unique-invoice-id",
+            "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
+            "return": request.build_absolute_uri(reverse('payment_done')),
+            "cancel_return": request.build_absolute_uri(reverse('payment_cancelled')),
+            "custom": "{}".format(order.order_code),
+            "invoice": "{}".format(order.order_code)
+        }
+        form = CustomPayPalPaymentsForm(initial=paypal_dict)
+        return render(request, 'process_payment.html', {'order': order, 'form': form})
+    except Exception as e:
+        return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': str(e)}}))
+
 
 @csrf_exempt
 def payment_done(request):
@@ -412,6 +459,7 @@ def expense(request, e_code):
     expense = get_object_or_404(Expense, e_code=e_code)
     return render(request, 'expense.html', {'expense': expense})
 
+
 def new_expense(request):
     if request.method == 'POST':
         description = request.POST.get('description')
@@ -419,7 +467,8 @@ def new_expense(request):
         category = request.POST.get('e_category')
         staff = request.user
 
-        expense = CreateExpense.create_new_expense(user, description, amount, category, staff)
+        expense = CreateExpense.create_new_expense(
+            user, description, amount, category, staff)
         print(expense.__dict__)
 
         return redirect(reverse('expense', kwargs={'e_code': expense.e_code}))
@@ -427,7 +476,6 @@ def new_expense(request):
     expense_categories = ExpenseCategory.objects.all()
 
     return render(request, 'new_expense.html', {'expense_categories': expense_categories})
-
 
 
 def expense_category(request):
@@ -455,16 +503,18 @@ def password_reset(request):
             # uid = base64.urlsafe_b64decode(uid.encode()).decode('latin-1')
             token = default_token_generator.make_token(user)
 
-            reset_url = request.build_absolute_uri(reverse('password_reset_confirm', kwargs={'uidb64': user_id, 'token': token}))
+            reset_url = request.build_absolute_uri(
+                reverse('password_reset_confirm', kwargs={'uidb64': user_id, 'token': token}))
             subject = 'Password Reset'
             message = f'Click the link below to reset your password:\n\n{reset_url}'
             send_mail(subject, message, 'itsmraga@gmail.com', [email])
 
-            messages.success(request, 'Password reset instructions have been sent to your email.')
+            messages.success(
+                request, 'Password reset instructions have been sent to your email.')
             return redirect('client_login')
         else:
             messages.error(request, 'Invalid email address.')
-    
+
     return render(request, 'password_reset.html')
 
 
@@ -480,7 +530,8 @@ def password_reset_confirm(request, uidb64, token):
                 if new_password1 == new_password2:
                     user.set_password(new_password1)
                     user.save()
-                    messages.success(request, 'Your password has been reset successfully. You can now login.')
+                    messages.success(
+                        request, 'Your password has been reset successfully. You can now login.')
                     return redirect('client_login')
                 else:
                     messages.error(request, 'Passwords do not match.')
@@ -495,4 +546,3 @@ def password_reset_confirm(request, uidb64, token):
 
 def password_reset_done(request):
     return render(request, 'password_reset_done.html')
-
