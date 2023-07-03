@@ -43,6 +43,34 @@ ul {
   cursor: pointer;
 }
 
+.fade-in-out {
+  animation: fade 3s linear forwards;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
+/* .errors {
+
+} */
+
+.errors-fail {
+  color: rgb(219, 36, 36);
+}
+
+.errors-success {
+  color: rgb(54, 206, 54);
+}
 /* img {
   width: 40px;
   aspect-ratio: 1 / 1;

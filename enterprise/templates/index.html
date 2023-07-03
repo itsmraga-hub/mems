@@ -1,4 +1,38 @@
 {% extends "base.html" %}
 {% block content %}
-  <!-- <h1>Home Page</h1> -->
+<div class="main-content-container" id="main-content-container">
+  <h1>Hi <span>{{user}}</span>,</h1>
+  <section class="main-content-container__dashboard">
+    <div>
+      <p>Last month sales</p>
+      <span>$0</span>
+      <a href="http://">view more</a>
+    </div>
+    <div>
+      <p>Sales this month</p>
+      <span>$10008</span>
+      <a href="http://">view more</a>
+    </div>
+    <div>
+      <p>All time sales</p>
+      <span>$10008</span>
+      <a href="http://">view more</a>
+    </div>
+    <div>
+      <p>Expenses</p>
+      <span>$10008</span>
+      <a href="http://">view more</a>
+    </div>
+    <div>
+      <p>Credit & Business Loans</p>
+      <span>$10008</span>
+      <a href="http://">view more</a>
+    </div>
+    <div>
+      <p>Top Clients</p>
+      <span>$10008</span>
+      <a href="http://">view more</a>
+    </div>
+  </section>
+</div>
 {% endblock %}

@@ -3,7 +3,7 @@
 <section class="up-container">
   {% if users %}
     
-  <h2>All Users</h2>
+  <h2>All {{u}}</h2>
   <table border="|">
     <thead>
       <tr>
@@ -43,7 +43,7 @@
     </tbody>
   </table>
   {% else %}
-  <h2>No users added yet!!</h2>
+  <h2>No {{u}} added yet!!</h2>
   {% endif %}
 </section>
 {% endblock %}

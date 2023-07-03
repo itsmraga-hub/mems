@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="sp-container">
+  <div class="p-intro">
+    <h3>{{product}}</h3>
+    <p>Brand: <span>{{product.brand}}</span></p>
+    <p>Categories:</p>
+    <ul>
+      {% for category in categories %}
+        <li>{{category.name}}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="sp-container_child">
+    <div class="sp-product-container" id="{{product.p_code}}">
+      {% if product.image %}
+      <img src="{{ product.image.url }}" alt="product.name" />
+      {% endif %}
+      <p class="product-price">At Only ${{product.price}}</p>
+    </div>
+    <div class="quantity-cart">
+      <input type="number" class="quantity" min="1" value="1">
+      <button id="{{product.p_code}}" class="add-to-cart" data-product-id="{{ product.id }}"
+        data-product-code="{{product.p_code}}"> Order</button>
+    </div>
+  </div>
+</section>
+{% endblock %}
