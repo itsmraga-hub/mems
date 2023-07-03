@@ -20,6 +20,7 @@ urlpatterns = [
     path('manage-products', views.manage_products, name='manage_products'),
     path('product-update/<str:p_code>', views.update_product, name='update_product'),
     path('orders', views.orders, name='orders'),
+    path('finances', views.track_finances, name='finances'),
     path('orders/pending', views.pending_orders, name='pending_orders'),
     path('orders/completed', views.completed_orders, name='completed_orders'),
     path('add_to_order', views.add_to_order, name='add_to_order'),
