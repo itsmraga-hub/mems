@@ -258,3 +258,18 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"Payment for Order #{self.order.id}"
+
+
+class MonthlyData(models.Model):
+    month = models.PositiveIntegerField()
+    year = models.PositiveIntegerField()
+    total_expenses = models.DecimalField(max_digits=8, decimal_places=2)
+    total_sales = models.DecimalField(max_digits=8, decimal_places=2)
+    profit_loss = models.DecimalField(max_digits=8, decimal_places=2)
+
+    def calculate_profit_loss(self):
+        self.profit_loss = self.total_sales - self.total_expenses
+        self.save()
+
+    def __str__(self):
+        return "Report for {}:{}".format(self.month, self.year)
