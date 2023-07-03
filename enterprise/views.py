@@ -16,12 +16,13 @@ import base64
 from decimal import Decimal
 from datetime import datetime as dt
 import datetime
-from django.db.models import Q
+from datetime import date
+from django.db.models import Q, Sum
 from django.core.paginator import Paginator
 
 
 # Import models
-from .models import Product, Order, OrderItem, ExpenseCategory, Expense, User, Loan, Account, ProductCategory
+from .models import Product, Order, OrderItem, ExpenseCategory, Expense, User, Loan, Account, ProductCategory, MonthlyData
 
 # Import project app logic
 from .add_product import SaveProduct
@@ -44,6 +45,40 @@ def homeview(request):
 @login_required
 def dashboard(request):
     return render(request, 'dashboard.html')
+
+
+@login_required
+def track_finances(request):
+    # Get current month and year
+    today = date.today()
+    month = today.month
+    year = today.year
+
+    # Calculate total expenses for the current month
+    total_expenses = Expense.objects.filter(date__month=month).aggregate(Sum('amount'))['amount__sum'] or 0
+
+    # Calculate total sales for the current month
+    total_sales = Order.objects.filter(date__month=month).aggregate(Sum('amount'))['amount__sum'] or 0
+
+    # Calculate profit/loss
+    profit_loss = total_sales - total_expenses
+
+    # Create or update MonthlyData for the current month
+    monthly_data, _ = MonthlyData.objects.get_or_create(month=month, year=year)
+    monthly_data.total_expenses = total_expenses
+    monthly_data.total_sales = total_sales
+    monthly_data.profit_loss = profit_loss
+    monthly_data.save()
+
+    # Retrieve historical monthly data
+    historical_data = MonthlyData.objects.order_by('-year', '-month')[:12]
+
+    context = {
+        'current_month_data': monthly_data,
+        'historical_data': historical_data,
+    }
+
+    return render(request, 'finances.html', context)
 
 
 @login_required
@@ -95,6 +130,12 @@ def client_login(request):
 
     return render(request, 'login.html')
 
+
+def product(request, p_code):
+    product = get_object_or_404(Product, p_code=p_code)
+    p_categories = product.categories.all()
+    print(p_categories)
+    return render(request, 'product.html', {'product': product, 'categories': p_categories})
 
 @login_required
 def add_product(request):
