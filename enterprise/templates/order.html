@@ -1,11 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-<section id="{{order.order_code}}">
-  <h2>Order: {{order.id}}</h2>
+<section id="{{order.order_code}}" class="up-container">
+  <h2>Order #{{order.id}}</h2>
   <div class="container order-container">
-    <p>{{order.id}}</p>
-    <p>{{order.order_code}}</p>
-    <p>{{order.status}}</p>
+    <p>Status: {{order.status}}</p>
   </div>
   <ul class="container">
     {% for order in order_items %}
