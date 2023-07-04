@@ -5,16 +5,38 @@
   <div class="container order-container">
     <p>Status: {{order.status}}</p>
   </div>
-  <ul class="container">
-    {% for order in order_items %}
-    <li>
-      <span>{{order.product.name}} </span>
-      <span>{{order.price}} </span>
-      <span>{{order.quantity}}</span>
-      <span>{{order.subtotal}}</span>
-    </li>
-    {% endfor %}
-  </ul>
+  <table border="|">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in order_items %}
+      <tr>
+        <td>{{order.product.name}}</td>
+        <td>
+          {{order.price}}
+        </td>
+        <td>
+          {{order.quantity}}
+        </td>
+        <td>
+          {{order.subtotal}}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3">Total</td>
+        <td>{{order.total_amount}}</td>
+      </tr>
+    </tfoot>
+  </table>
   <div id="">
     <h4 class="" id="orderId" data-id="{{order.order_code}}" data-value="{{order.total_amount}}">Total:
       {{order.total_amount}}</h4>
