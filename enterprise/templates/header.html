@@ -1,11 +1,11 @@
 <div class="header-container__div" id="'header-container__div">
   <div class="header-container__div-logo">
-    <h2><a href="{% url 'home' %}">mems-prise</a></h2>
+    <h2><a href="/">mems-prise</a></h2>
   </div>
   <div class="header-container__div-tabs">
     <ul class="header-container__div-tabs-ul">
       {% if user.is_authenticated %}
-      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="/">Home</a></li>
       {% endif %}
       <li id="product"><a href="{% url 'products' %}">Products</a></li>
       <li>About us</li>
