@@ -12,7 +12,16 @@ class CreateOrder:
   def create_new_order(user, payment_method, total_amount, shipping_address, selected_products):
     try:
       order_code = str(uuid.uuid4())
-      order = Order.objects.get(id=8)
+      order = Order.objects.create(
+        confirmed=True,
+        client=user,
+        total_amount=total_amount,
+        order_code=order_code,
+        shipping_address=shipping_address,
+        payment_method=payment_method,
+        
+      )
+
       try:
         for selected_product in selected_products:
           product = Product.objects.get(id=selected_product.id)
