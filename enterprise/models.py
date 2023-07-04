@@ -228,7 +228,7 @@ class OrderItem(models.Model):
 
 class ExpenseCategory(models.Model):
     name = models.CharField(max_length=50)
-    ec_code = models.CharField(max_length=50, default=str(uuid.uuid4()))
+    ec_code = models.CharField(max_length=50, default='')
 
     def __str__(self):
         return self.name
@@ -263,9 +263,9 @@ class Payment(models.Model):
 class MonthlyData(models.Model):
     month = models.PositiveIntegerField()
     year = models.PositiveIntegerField()
-    total_expenses = models.DecimalField(max_digits=8, decimal_places=2)
-    total_sales = models.DecimalField(max_digits=8, decimal_places=2)
-    profit_loss = models.DecimalField(max_digits=8, decimal_places=2)
+    total_expenses = models.DecimalField(max_digits=8, decimal_places=2, null=True)
+    total_sales = models.DecimalField(max_digits=8, decimal_places=2, null=True)
+    profit_loss = models.DecimalField(max_digits=8, decimal_places=2, null=True)
 
     def calculate_profit_loss(self):
         self.profit_loss = self.total_sales - self.total_expenses
