@@ -59,6 +59,13 @@ ul {
   }
 }
 
+select {
+  padding: 1rem;
+}
+
+select option {
+  padding: 1.5rem;
+}
 
 /* .errors {
 
