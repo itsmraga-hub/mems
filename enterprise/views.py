@@ -335,6 +335,7 @@ def user(request, user_id):
     return render(request, 'user.html', {'user': user, 'num_orders': num_orders})
 
 
+@login_required
 def system_users(request):
     try:
         users = list(User.objects.all())
@@ -344,6 +345,7 @@ def system_users(request):
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
+@login_required
 def system_admins(request):
     try:
         users = User.objects.filter(is_admin=True)
@@ -353,6 +355,7 @@ def system_admins(request):
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
+@login_required
 def system_clients(request):
     try:
         users = User.objects.filter(is_staff=False)
@@ -362,6 +365,7 @@ def system_clients(request):
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
+@login_required
 def system_staff(request):
     try:
         users = User.objects.filter(is_staff=True)
@@ -372,6 +376,7 @@ def system_staff(request):
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
+@login_required
 def system_archived_users(request):
     try:
         users = User.objects.filter(is_archived=True)
@@ -381,6 +386,7 @@ def system_archived_users(request):
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
+@login_required
 def create_admin(request):
     try:
         if request.method == 'POST':
@@ -403,6 +409,7 @@ def create_admin(request):
         return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': str(e)}}))
 
 
+@login_required
 def create_staff(request):
     try:
         if request.method == 'POST':
@@ -426,6 +433,7 @@ def create_staff(request):
         return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': str(e)}}))
 
 
+@login_required
 def order(request, order_code):
     try:
         order = Order.objects.get(order_code=order_code)
@@ -438,6 +446,7 @@ def order(request, order_code):
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
+@login_required
 def process_order(request, order_code):
     try:
         order = get_object_or_404(Order, order_code=order_code)
@@ -455,6 +464,7 @@ class CustomPayPalPaymentsForm(PayPalPaymentsForm):
         return """<button type="submit">Continue on PayPal website</button>"""
 
 
+@login_required
 def process_payment(request, order_code):
     try:
         order = get_object_or_404(Order, order_code=order_code)
