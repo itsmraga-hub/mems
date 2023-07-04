@@ -90,7 +90,7 @@ LOGOUT_REDIRECT_URL = 'client_login'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mems',
+        'NAME': 'mems_backup',
         'USER': 'raga',
         'PASSWORD': 'root',
         'HOST': '127.0.0.1',

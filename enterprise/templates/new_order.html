@@ -8,26 +8,22 @@
     <form method="POST" name="orderForm">
       {% csrf_token %}
       <!-- Render form fields for selected products -->
-      {% for product in selected_products %}
-      <h3>{{ product.name }}</h3>
-      <input type="hidden" name="product_ids[]" value="{{ product.id }}" class="">
-      <label for="quantity_{{ product.id }}">Quantity:</label>
-      <input type="number" name="quantities[]" id="quantity_{{ product.id }}" min="1"
-        value="{{product.client_quantity}}" class="product-inputs" data-id="{{product.price}}">
-      {% endfor %}
-      <!-- Include other relevant form fields such as customer details, payment method, etc. -->
-      <!-- <div>
-        <label for="id_status">Status:</label>
-        <select id="id_status" name="status">
-          <option value="pending">Pending</option>
-          <option value="in_progress">In Progress</option>
-          <option value="Completed">Completed</option>
-          <option value="cancelled">Cancelled</option>
-        </select>
-      </div> -->
-      <div style="display: none;">
+      <ul class="order-container">
+        {% for product in selected_products %}
+
+        <li>
+          <span>{{ product.name }}</span>
+          <input type="hidden" name="{{product.name}}" value="{{ product.id }}" class="">
+          <input type="number" name="{{product.name}}-quantity" id="quantity_{{ product.id }}" min="1"
+            value="{{product.client_quantity}}" class="product_inputs quantity" data-id="{{product.price}}">
+          <input type="submit" id="quantity_{{ product.id }}" class="product-inputs hover" value="Update Quantity">
+        </li>
+
+        {% endfor %}
+      </ul>
+      <div>
         <label for="id_payment_method">Payment Method:</label>
-        <select id="id_payment_method" name="payment_method">
+        <select id="id_payment_method" class='hover' name="payment_method">
           <option value="paypal" selected>PayPal</option>
         </select>
       </div>

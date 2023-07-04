@@ -19,7 +19,7 @@
       <p class="product-price">$ {{product.price}}</p>
     </div>
     <div class="quantity-cart">
-      <input type="number" class="quantity" min="1" value="1">
+      <input type="hidden" class="quantity" min="1" value="1">
       <button id="{{product.p_code}}" class="add-to-cart" data-product-id="{{ product.id }}"
         data-product-code="{{product.p_code}}">Add to
         Order</button>

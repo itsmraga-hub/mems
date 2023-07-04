@@ -1,9 +1,13 @@
 $(document).ready(() => {
-  $('.product-inputs').on('input', () => {
-
-    var changedInputValue = $(this).val();
-    var inputIndex = $('.product-inputs').index(this);
-    console.log('Input at index', inputIndex, 'changed:', changedInputValue);
-    // $(this).val = changedInputValue
+  $('.product_inputs').on('input', () => {
+    $.ajax({
+      url: '/memsprise/order',
+      method: 'PUT',
+      data: { 'query': query },
+      success: function (data) {
+        // $('#search-results').html(data);
+        console.log('success')
+      }
+    })
   });
 });
