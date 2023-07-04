@@ -11,7 +11,7 @@
 .sign-form {
   padding: 4em 0;
   background-color: #bbb;
-  height: 92vh;
+  /* height: 92vh; */
 }
 
 .sign-form form {
@@ -26,9 +26,9 @@
   padding: 1rem 0;
 }
 
-.sign-form form h1 {
+/* .sign-form form h1 {
   padding: 2em;
-}
+} */
 
 .form-container h1 {
   text-decoration: underline;
