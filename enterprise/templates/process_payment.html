@@ -1,8 +1,26 @@
 {% extends "base.html" %}
-{% block title %}
-  Make Payment
-{% endblock title %}
 {% block content %}
-  <h1>Pay With Paypal</h1>
-  {{form.render}}
+<section id="{{order.order_code}}" class="up-container">
+  <h2>Order #{{order.id}}</h2>
+  <div class="container order-container">
+    <p>Status: {{order.status}}</p>
+  </div>
+  <ul class="container">
+    {% for order in order_items %}
+    <li>
+      <span>{{order.product.name}} </span>
+      <span>{{order.price}} </span>
+      <span>{{order.quantity}}</span>
+      <span>{{order.subtotal}}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  <div id="">
+    <h4 class="" id="orderId" data-id="{{order.order_code}}" data-value="{{order.total_amount}}">Total:
+      {{order.total_amount}}</h4>
+  </div>
+  <div id="paypal-button-container">
+    {{form.render}}
+  </div>
+</section>
 {% endblock %}
