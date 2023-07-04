@@ -11,6 +11,7 @@ class CreateOrder:
 
   def create_new_order(user, payment_method, total_amount, shipping_address, selected_products):
     try:
+      print(selected_products[0].__dict__)
       order_code = str(uuid.uuid4())
       order = Order.objects.create(
         confirmed=True,
@@ -19,7 +20,6 @@ class CreateOrder:
         order_code=order_code,
         shipping_address=shipping_address,
         payment_method=payment_method,
-        
       )
 
       try:
