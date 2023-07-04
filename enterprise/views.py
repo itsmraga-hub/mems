@@ -58,7 +58,7 @@ def track_finances(request):
     total_expenses = Expense.objects.filter(date__month=month).aggregate(Sum('amount'))['amount__sum'] or 0
 
     # Calculate total sales for the current month
-    total_sales = Order.objects.filter(date__month=month).aggregate(Sum('amount'))['amount__sum'] or 0
+    total_sales = Order.objects.filter(order_date__month=month).aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
 
     # Calculate profit/loss
     profit_loss = total_sales - total_expenses
@@ -303,7 +303,6 @@ def new_order(request):
 
 def confirm_order(request):
     if request.method == 'POST':
-        # order = Order.objects.create()
         print(request.__dict__)
         return redirect('order')
 
@@ -312,7 +311,6 @@ def add_to_order(request):
     try:
         if request.method == 'POST':
             order_items = json.loads(request.POST.get('cart_items'))
-            # print(order_items)
 
         return render(request, 'order.html')
     except Exception as e:
@@ -323,7 +321,6 @@ def add_to_order(request):
 def user(request, user_id):
     user = get_object_or_404(User, user_id=user_id)
     orders = Order.objects.filter(client=request.user)
-    # orders = get_list_or_404(Order, client=request.user)
     num_orders = len(orders)
     return render(request, 'user.html', {'user': user, 'num_orders': num_orders})
 
@@ -340,7 +337,6 @@ def system_users(request):
 def system_admins(request):
     try:
         users = User.objects.filter(is_admin=True)
-        # print(order_items)
 
         return render(request, 'users.html', {'users': users, 'u': 'Admins'})
     except Exception as e:
@@ -350,7 +346,6 @@ def system_admins(request):
 def system_clients(request):
     try:
         users = User.objects.filter(is_staff=False)
-        # print(order_items)
 
         return render(request, 'users.html', {'users': users, 'u': 'Clients'})
     except Exception as e:
@@ -370,7 +365,6 @@ def system_staff(request):
 def system_archived_users(request):
     try:
         users = User.objects.filter(is_archived=True)
-        # print(order_items)
 
         return render(request, 'users.html', {'users': users, 'u': 'Archived users'})
     except Exception as e:
@@ -426,6 +420,7 @@ def order(request, order_code):
     try:
         order = Order.objects.get(order_code=order_code)
         order_items = OrderItem.objects.filter(order_id=order.id)
+        print(order_items)
         if request.method == 'POST':
             return redirect('process_payment')
         return render(request, 'order.html', {'order': order, 'order_items': order_items})
