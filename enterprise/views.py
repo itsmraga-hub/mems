@@ -124,7 +124,7 @@ def client_login(request):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect('dashboard')
         else:
             return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': 'failed to login'}}))
 
@@ -137,22 +137,25 @@ def product(request, p_code):
     print(p_categories)
     return render(request, 'product.html', {'product': product, 'categories': p_categories})
 
+
 @login_required
 def add_product(request):
     categories = ProductCategory.objects.all()
     if request.method == 'POST':
         name = request.POST.get('product_name')
         description = request.POST.get('description')
+        buy_price = request.POST.get('buy_price')
         price = request.POST.get('price')
         quantity = request.POST.get('quantity')
         image = request.FILES.get('image')
         brand = request.POST.get('brand')
         # category = request.POST.get('category')
         category_ids = request.POST.getlist('categories')
+        user = request.user
 
         SaveProduct.save_new_product(
-            name, description, price, image, quantity, brand, category_ids)
-        return redirect('products')
+            name, description, buy_price, price, image, quantity, brand, category_ids, user)
+        # return redirect('products')
 
     return render(request, 'add_product.html', {'categories': categories})
 
