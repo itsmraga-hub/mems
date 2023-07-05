@@ -3,27 +3,43 @@ from django.http import HttpResponse
 import json
 import uuid
 
-from .models import Product, ProductCategory
+from .models import Product, ProductCategory, Expense, ExpenseCategory
 
 
 class SaveProduct:
     def __init__(self):
         pass
 
-    def save_new_product(name, description, price, image, quantity, brand, category_ids):
+    def save_new_product(name, description, buy_price, price, image, quantity, brand, category_ids, user):
         try:
             p_code = str(uuid.uuid4())
             product = Product.objects.create(
                 p_code=p_code,
                 name=name,
                 description=description,
+                buy_price=buy_price,
                 price=price,
                 image=image,
                 quantity=quantity,
-                brand=brand
+                brand=brand,
             )
-            product.categories.set(category_ids)
-            # print(product.categories)
+            # product = Product.objects.get(id=3)
+            if product is not None:
+                e_category = ExpenseCategory.objects.get(name='Purchases')
+                description = f"Purchase of {product.quantity} - {product.name} on {product.date} worth {product.price * product.quantity}"
+                total = product.price * product.quantity
+                e_code = str(uuid.uuid4())
+                try:
+                    expense = Expense.objects.create(
+                        product=product,
+                        e_code=e_code,
+                        description=description,
+                        staff=user,
+                        amount=total,
+                        category=e_category
+                    )
+                except Exception as e:
+                    return HttpResponse(json.dumps({"status": "fail", "data": {"message": str(e)}}))
             product.save()
             return HttpResponse(json.dumps({"status": "success", "data": {"message": p_code}}))
         except Exception as e:

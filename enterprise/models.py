@@ -192,6 +192,9 @@ class Product(models.Model):
     name = models.CharField(max_length=255, null=True)
     p_code = models.CharField(max_length=255, null=True)
     description = models.TextField(max_length=255, blank=True)
+    date = models.DateTimeField(auto_now_add=True, null=True)
+    buy_price = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0, blank=True)
     price = models.DecimalField(
         max_digits=10, decimal_places=2, default=0, blank=True)
     image = models.ImageField(upload_to='products', blank=True)
@@ -240,8 +243,9 @@ class ExpenseCategory(models.Model):
 class Expense(models.Model):
     description = models.CharField(max_length=255)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
     e_code = models.CharField(max_length=255, blank=True, null=True)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(ExpenseCategory, on_delete=models.CASCADE)
     staff = models.ForeignKey(User, on_delete=models.CASCADE)
 

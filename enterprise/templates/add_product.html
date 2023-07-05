@@ -6,11 +6,15 @@
     {% csrf_token %}
     <div>
       <label for="product_name">Product name</label>
-      <input type="text" name="product_name" required />
+      <input type="text" name="product_name"  />
     </div>
     <div>
-      <label for="price">Price</label>
-      <input type="number" name="price" required />
+      <label for="buy_price">Buying Price</label>
+      <input type="number" name="buy_price"  />
+    </div>
+    <div>
+      <label for="price">Selling Price</label>
+      <input type="number" name="price"  />
     </div>
     <div class="categories-container">
       <label for="category">Categories:</label>
@@ -29,15 +33,15 @@
     </div>
     <div>
       <label for="image">Product Image</label>
-      <input type="file" name="image" required />
+      <input type="file" name="image"  />
     </div>
     <div>
       <label for="brand">Brand name</label>
-      <input type="text" name="brand" required />
+      <input type="text" name="brand"  />
     </div>
     <div>
       <label for="quantity">Copies Available</label>
-      <input type="number" name="quantity" required />
+      <input type="number" name="quantity"  />
     </div>
     <div>
       <label for="description">Product Description</label>
