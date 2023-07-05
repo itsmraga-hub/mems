@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-xj+1zl79!7fyf=&gw0($r4rycw6yr-4$0sskhqf!53)6$)l3ea'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # ALLOWED_HOSTS = ['*', '*.ngrok-free.app', 'https://1276-105-163-1-222.ngrok-free.app']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['app.williamraga.tech', 'williamraga.tech', '*']
 
 # CORS_ORIGIN_WHITELIST = [
 #     'https://2fb8-105-163-1-222.ngrok-free.app',
@@ -84,13 +84,15 @@ AUTH_USER_MODEL = 'enterprise.User'
 
 LOGOUT_REDIRECT_URL = 'client_login'
 
+LOGIN_REDIRECT_URL = 'client_login'
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mems_backup',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'mems',
         'USER': 'raga',
         'PASSWORD': 'root',
         'HOST': '127.0.0.1',
@@ -136,10 +138,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, 'static'),
 # ]
+
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # media files
 # ...

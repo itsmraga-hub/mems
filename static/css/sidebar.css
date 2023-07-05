@@ -1,0 +1,67 @@
+.sidebar-container {
+  width: 25%;
+  min-height: 92vh;
+  height: fit-content;
+  font-size: 2em;
+  /* height: 100%; */
+  background-color: #d3d3d3;
+  overflow-x: hidden;
+}
+
+/* Sidebar open and close classes */
+.sidebar-closed {
+  width: 10%;
+  font-size: 1.25em;
+  height: 100vh;
+  background-color: #d3d3d3;
+}
+
+.sidebar-closed .sidebar-container__div-dropdown {
+  font-size: 1.15em;
+}
+
+.sidebar-container .sidebar-container__div {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.sidebar-container__div .burger-icon {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.sidebar-container__div .burger-icon i {
+  /* width: 2em; */
+  padding: 1rem;
+}
+
+.sidebar-container__div div div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  padding: 1rem;
+}
+
+.sidebar-container__div div div:hover {
+  cursor: pointer;
+}
+
+.sidebar-container__div h2:hover {
+  cursor: pointer;
+}
+
+.sidebar-container__div-dropdown {
+  font-size: 1.75rem;
+  padding: 0 1em;
+  font-weight: bold;
+}
+
+.sidebar-container__div-dropdown li {
+  border-bottom: 1px solid #bbb;
+  padding: 1rem;
+}

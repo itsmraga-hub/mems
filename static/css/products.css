@@ -1,0 +1,259 @@
+.products-container {
+  height: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 4.5em 1fr 1fr 4.5em;
+  /* gap: 1rem; */
+  row-gap: 1rem;
+  width: 100%;
+  font-size: 2em;
+  font-weight: bold;
+  padding: 1rem 0;
+}
+
+.products-container .search-input,
+.products-container .pagination {
+  width: 100%;
+  grid-column: 1 / -1;
+  height: max-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.products-container .search-input form {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.products-container .search-input form input[type='text'] {
+  width: 50%;
+  padding: 1rem 1em;
+  outline: none;
+  border: 0.5px;
+  border-radius: 8px;
+  background: #bbbbbb62;
+  margin-top: 0.25rem;
+  align-self: center;
+  justify-self: center;
+}
+
+
+.products-container .search-input form input[type='submit'] {
+  padding: 1rem 1em;
+  /* outline: none; */
+  border: 0.5px;
+  border-radius: 8px;
+  background: #bbbbbb62;
+  margin-top: 0.25rem;
+  align-self: center;
+  justify-self: center;
+}
+
+.products-container .search-input form input[type='submit']:hover {
+  cursor: pointer;
+}
+
+.p-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* gap: 0.5rem; */
+  /* padding: 0 0 0.5rem; */
+  box-shadow: inset #bbb;
+}
+
+.products-container .p-container .product-container {
+  width: 90%;
+  padding: 0.5rem;
+  border: 1px solid #bbb;
+  border-radius: 0.8em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.products-container .p-container .product-container img {
+  margin: auto;
+  width: 9em;
+  height: 10em;
+  border-radius: 0.8em;
+  /* transition: width 2s, height 2s; */
+}
+
+.products-container .p-container .product-container:hover {
+  cursor: pointer;
+  /* font-size: 1.05em; */
+}
+
+.p-container .quantity-cart {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* gap: 1em; */
+  border-bottom: 1px solid #bbb;
+  padding: 1rem;
+}
+
+/* .order-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+} */
+
+.order-container li {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  /* list-style-type: disc; */
+}
+
+.order-container span {
+  width: max-content;
+  font-weight: bolder;
+  line-height: 2em;
+  font-size: 1.5em;
+  /* border: 1px solid red; */
+}
+
+.product-inputs {
+  font-weight: bolder;
+  border-radius: 0.8em;
+  padding: 1rem;
+}
+
+.quantity {
+  width: 5rem;
+  outline: none;
+  border: none;
+  padding: 0.5em;
+  border-radius: 0.8em;
+  background: #bbbbbb72;
+  /* padding-left: 0.5rem; */
+}
+
+.p-container .add-to-cart {
+  padding: 1rem;
+  border-radius: 0.8em;
+  background: #bbbbbb99;
+  outline: none;
+  border: none;
+  font-weight: bold;
+}
+
+.p-container .add-to-cart:hover {
+  cursor: pointer;
+}
+
+.up-container {
+  width: 100%;
+  font-size: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0 0 0.5rem;
+  /* border-bottom: 1px solid #bbb; */
+  box-shadow: inset #bbb;
+}
+
+.up-container h2 {
+  font-size: 2em;
+}
+
+table {
+  border: 1px solid #bbb;
+}
+
+table thead,
+table tbody,
+table tfoot {
+  font-size: 1.25em;
+}
+
+table tbody tr {
+  padding: 0 1em;
+}
+
+table tr td {
+  padding: 0.25rem 1rem;
+}
+
+table tr td input {
+  padding: 0.5rem;
+  outline: none;
+  border: none;
+}
+
+table tr td input[type='submit'] {
+  border-radius: 8px;
+}
+
+table tr td input[type='submit']:hover {
+  cursor: pointer;
+}
+
+.sp-container {
+  padding: 1em 0;
+  width: 100%;
+  font-size: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+
+.sp-container .p-intro {
+
+}
+
+.sp-container .p-intro h3 {
+
+}
+
+.sp-container .p-intro p {
+  font-weight: 700;
+  padding-left: 1.5em;
+}
+
+.sp-container .p-intro p span {
+  color: #bbb;
+
+}
+
+.sp-container .p-intro ul {
+  font-weight: bold;
+  padding-left: 3em;
+}
+
+.sp-container .p-intro ul li {
+  /* padding-left: 1.5em; */
+  font-weight: 700;
+  color: #bbb;
+  list-style-type: square;
+}
+
+.sp-container .sp-container__child {
+  width: 100%;
+  display: grid;
+  justify-content: center;
+}
+
+.sp-product-container {
+  width: 80%;
+}
+
+.sp-product-container img {
+  width: 32em;
+  border-radius: 8px;
+}
+
+.sp-product-container p {
+  font-weight: bold;
+  font-size: 1.5em;
+}
