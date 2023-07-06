@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="up-container">
+<section class="up-container form-container">
   <h2>Expenses for the month of {{month}}</h2>
   <p>{{date}}</p>
+  <form action="" method="post">
+    <div>
+      <input type="month" name="month" id="" min="2020-08">
+    </div>
+    <input type="submit" value="Filter by month and year">
+  </form>
   <table border="|">
     <thead>
       <tr>
@@ -13,6 +19,7 @@
       </tr>
     </thead>
     <tbody>
+      {% if expenses %}
       {% for expense in expenses %}
       <tr>
         <td>{{expense.category.name}}</td>
@@ -28,6 +35,16 @@
         <td>{{total}}</td>
       </tr>
     </tfoot>
+    {% else %}
+    <tbody>
+      <tr>
+        <td colspan="4">
+          <h2>No Expenses added yet for this period</h2>
+        </td>
+      </tr>
+    </tbody>
+    {% endif %}
+
   </table>
 </section>
 {% endblock %}
