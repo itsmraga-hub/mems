@@ -508,21 +508,33 @@ def payment_cancelled(request):
 
 
 @login_required
+@csrf_exempt
 def expenses(request):
-    expenses = Expense.objects.all()
-    # for expense in expenses:
-        # expense.c_date = expense.date.strftime("%D")
-    total = 0
-    # total = [total := total + float(e.amount) for e in expenses]
-    # print(total[-1])
-    for expense in expenses:
-        total += expense.amount
-    time = dt.now()
-    month = time.strftime("%B %Y")
-    print(month)
-    date = datetime.date.today()
+    try:
+        time = dt.now()
+        month = time.strftime("%B %Y")
+        c_month = time.strftime("%m")
+        c_year = time.strftime("%Y")
+        expenses = Expense.objects.filter(date__month=c_month, date__year=c_year)
 
-    return render(request, 'expenses.html', {'expenses': expenses, 'month': month, 'total': total})
+        if request.method == 'POST':
+            month = request.POST.get('month')
+            if month is not None:
+                r_year = int(month.split('-')[0])
+                r_month = int(month.split('-')[1])
+
+                expenses = Expense.objects.filter(date__month=r_month, date__year=r_year)
+
+                # return render(request, 'expenses.html', {'expenses': expenses, 'month': month, 'total': total})
+
+        total = 0
+        for expense in expenses:
+            total += expense.amount
+
+        return render(request, 'expenses.html', {'expenses': expenses, 'month': month, 'total': total})
+
+    except Exception as e:
+        print(e)
 
 
 def expense(request, e_code):
