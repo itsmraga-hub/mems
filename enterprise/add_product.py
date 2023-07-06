@@ -26,7 +26,8 @@ class SaveProduct:
             if product is not None:
                 e_category = ExpenseCategory.objects.get(name='Purchases')
                 total = float(product.price) * float(product.quantity)
-                description = f"Purchase of {product.quantity} - {product.name} on {product.date} worth {total}"                
+                date = product.date.strftime("%D")
+                description = f"Purchase of {product.quantity} - {product.name} on {date} worth {total}"                
                
                 e_code = str(uuid.uuid4())
                 print(e_code)
