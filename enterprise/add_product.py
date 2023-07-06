@@ -23,12 +23,13 @@ class SaveProduct:
                 quantity=quantity,
                 brand=brand,
             )
-            # product = Product.objects.get(id=3)
             if product is not None:
                 e_category = ExpenseCategory.objects.get(name='Purchases')
-                description = f"Purchase of {product.quantity} - {product.name} on {product.date} worth {product.price * product.quantity}"
-                total = product.price * product.quantity
+                total = float(product.price) * float(product.quantity)
+                description = f"Purchase of {product.quantity} - {product.name} on {product.date} worth {total}"                
+               
                 e_code = str(uuid.uuid4())
+                print(e_code)
                 try:
                     expense = Expense.objects.create(
                         product=product,
