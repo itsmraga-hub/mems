@@ -6,7 +6,7 @@
   <table border="|">
     <thead>
       <tr>
-        <td>Expense Code</td>
+        <td>Expense Category</td>
         <td>Expense Date</td>
         <td>Expense Description</td>
         <td>Expense Amount</td>
@@ -15,7 +15,7 @@
     <tbody>
       {% for expense in expenses %}
       <tr>
-        <td>{{expense.e_code}}</td>
+        <td>{{expense.category.name}}</td>
         <td>{{expense.date}}</td>
         <td>{{expense.description}}</td>
         <td>{{expense.amount}}</td>

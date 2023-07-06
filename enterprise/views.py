@@ -507,13 +507,22 @@ def payment_cancelled(request):
     return render(request, 'payment_cancelled.html')
 
 
+@login_required
 def expenses(request):
-    expenses = get_list_or_404(Expense)
+    expenses = Expense.objects.all()
+    # for expense in expenses:
+        # expense.c_date = expense.date.strftime("%D")
+    total = 0
+    # total = [total := total + float(e.amount) for e in expenses]
+    # print(total[-1])
+    for expense in expenses:
+        total += expense.amount
     time = dt.now()
     month = time.strftime("%B %Y")
+    print(month)
     date = datetime.date.today()
 
-    return render(request, 'expenses.html', {'expenses': expenses, 'month': month})
+    return render(request, 'expenses.html', {'expenses': expenses, 'month': month, 'total': total})
 
 
 def expense(request, e_code):
