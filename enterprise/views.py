@@ -44,6 +44,16 @@ def homeview(request):
 
 @login_required
 def dashboard(request):
+    # Get current month and year
+    today = date.today()
+    month = today.month
+    year = today.year
+
+    # Calculate total expenses for the current month
+    total_expenses = Expense.objects.filter(date__month=month).aggregate(Sum('amount'))['amount__sum'] or 0
+
+    # Calculate total sales for the current month
+    total_sales = Order.objects.filter(order_date__month=month).aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
     return render(request, 'dashboard.html')
 
 
@@ -83,6 +93,16 @@ def track_finances(request):
 
 @login_required
 def admin_dashboard(request):
+    # Get current month and year
+    today = date.today()
+    month = today.month
+    year = today.year
+
+    # Calculate total expenses for the current month
+    total_expenses = Expense.objects.filter(date__month=month).aggregate(Sum('amount'))['amount__sum'] or 0
+
+    # Calculate total sales for the current month
+    total_sales = Order.objects.filter(order_date__month=month).aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
     loans = Loan.objects.all()
     expenses = Expense.objects.all()
 
