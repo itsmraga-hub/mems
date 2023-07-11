@@ -41,8 +41,12 @@
     <h4 class="" id="orderId" data-id="{{order.order_code}}" data-value="{{order.total_amount}}">Total:
       {{order.total_amount}}</h4>
   </div>
+  {% if order.paid %}
+  <h2>Order cleared. Wait for pickup instructions</h2>
+  {% else %}
   <div id="paypal-button-container">
     {{form.render}}
   </div>
+  {% endif %}
 </section>
 {% endblock %}
