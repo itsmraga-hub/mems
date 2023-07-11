@@ -127,7 +127,8 @@ def admin_dashboard(request):
     total_expenses = Expense.objects.filter(date__month=month).aggregate(Sum('amount'))['amount__sum'] or 0
 
     # Calculate total sales for the current month
-    total_sales = Order.objects.filter(order_date__month=month).aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
+    total_sales = Order.objects.filter(order_date__month=month).aggregate(Sum('total_amount'))['total_amount__sum'] or 0
+    # print(total_sales)
     loans = Loan.objects.all().aggregate(Sum('amount'))['amount__sum'] or 0
     expenses = Expense.objects.all()
     clients = len(User.objects.filter(is_staff=False, is_admin=False))
