@@ -35,19 +35,20 @@ from .process_order import ProcessOrder
 
 
 # Create your views here.
-@login_required
+# @login_required
 def homeview(request):
     # return HttpResponse('index.html')
     user = request.user
-    return render(request, 'index.html', {'user': user})
+    products = Product.objects.all()
+    return render(request, 'products.html', {'products': products})
 
 
-@login_required
+@login_required(login_url='clients/login')
 def dashboard(request):
     return render(request, 'dashboard.html')
 
 
-@login_required
+@login_required(login_url='clients/login')
 def track_finances(request):
     # Get current month and year
     today = date.today()
@@ -81,7 +82,7 @@ def track_finances(request):
     return render(request, 'finances.html', context)
 
 
-@login_required
+@login_required(login_url='clients/login')
 def admin_dashboard(request):
     loans = Loan.objects.all()
     expenses = Expense.objects.all()
@@ -138,7 +139,7 @@ def product(request, p_code):
     return render(request, 'product.html', {'product': product, 'categories': p_categories})
 
 
-@login_required
+@login_required(login_url='clients/login')
 def add_product(request):
     categories = ProductCategory.objects.all()
     if request.method == 'POST':
@@ -160,7 +161,7 @@ def add_product(request):
     return render(request, 'add_product.html', {'categories': categories})
 
 
-@login_required
+@login_required(login_url='clients/login')
 def add_product_category(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -207,7 +208,7 @@ def search_products(request):
     return render(request, 'products.html', {'results': results})
 
 
-@login_required
+@login_required(login_url='clients/login')
 def manage_products(request):
     products = Product.objects.all()
     if request.method == 'POST':
@@ -225,7 +226,7 @@ def manage_products(request):
     return render(request, 'manage_products.html', {'products': products})
 
 
-@login_required
+@login_required(login_url='clients/login')
 def update_product(request, p_code):
     product = get_object_or_404(Product, p_code=p_code)
     if request.method == 'POST':
@@ -234,11 +235,11 @@ def update_product(request, p_code):
     return render(request, 'update_product.html', {'product': product})
 
 
-@login_required
+@login_required(login_url='clients/login')
 def orders(request):
     try:
         orders = []
-        if request.user.is_staff:
+        if request.user.is_staff or request.user.is_admin:
             orders = Order.objects.all()
         else:
             orders = Order.objects.filter(client=request.user)
@@ -248,7 +249,16 @@ def orders(request):
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
-@login_required
+@login_required(login_url='clients/login')
+def my_orders(request):
+    try:
+        orders = Order.objects.filter(client=request.user)
+        return render(request, 'orders.html', {'orders': orders})
+    except Exception as e:
+        return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+
+@login_required(login_url='clients/login')
 def pending_orders(request):
     try:
         # orders = Order.objects.filter(status='pending')
@@ -263,7 +273,7 @@ def pending_orders(request):
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
-@login_required
+@login_required(login_url='clients/login')
 def completed_orders(request):
     try:
         # orders = Order.objects.filter(status='completed')
@@ -278,7 +288,7 @@ def completed_orders(request):
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
-@login_required
+@login_required(login_url='clients/login')
 def new_order(request):
     products_param = request.GET.get('products')
     products = json.loads(products_param) if products_param else []
@@ -330,7 +340,7 @@ def add_to_order(request):
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
-@login_required
+@login_required(login_url='clients/login')
 def user(request, user_id):
     user = get_object_or_404(User, user_id=user_id)
     orders = Order.objects.filter(client=request.user)
@@ -338,7 +348,7 @@ def user(request, user_id):
     return render(request, 'user.html', {'user': user, 'num_orders': num_orders})
 
 
-@login_required
+@login_required(login_url='clients/login')
 def system_users(request):
     try:
         users = list(User.objects.all())
@@ -348,7 +358,7 @@ def system_users(request):
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
-@login_required
+@login_required(login_url='clients/login')
 def system_admins(request):
     try:
         users = User.objects.filter(is_admin=True)
@@ -358,7 +368,7 @@ def system_admins(request):
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
-@login_required
+@login_required(login_url='clients/login')
 def system_clients(request):
     try:
         users = User.objects.filter(is_staff=False)
@@ -368,7 +378,7 @@ def system_clients(request):
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
-@login_required
+@login_required(login_url='clients/login')
 def system_staff(request):
     try:
         users = User.objects.filter(is_staff=True)
@@ -379,7 +389,7 @@ def system_staff(request):
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
-@login_required
+@login_required(login_url='clients/login')
 def system_archived_users(request):
     try:
         users = User.objects.filter(is_archived=True)
@@ -389,7 +399,7 @@ def system_archived_users(request):
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
-@login_required
+@login_required(login_url='clients/login')
 def create_admin(request):
     try:
         if request.method == 'POST':
@@ -412,7 +422,7 @@ def create_admin(request):
         return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': str(e)}}))
 
 
-@login_required
+@login_required(login_url='clients/login')
 def create_staff(request):
     try:
         if request.method == 'POST':
@@ -436,7 +446,7 @@ def create_staff(request):
         return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': str(e)}}))
 
 
-@login_required
+@login_required(login_url='clients/login')
 def order(request, order_code):
     try:
         order = Order.objects.get(order_code=order_code)
@@ -449,7 +459,7 @@ def order(request, order_code):
         return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
 
 
-@login_required
+@login_required(login_url='clients/login')
 def process_order(request, order_code):
     try:
         order = get_object_or_404(Order, order_code=order_code)
@@ -467,7 +477,7 @@ class CustomPayPalPaymentsForm(PayPalPaymentsForm):
         return """<button type="submit">Continue on PayPal website</button>"""
 
 
-@login_required
+@login_required(login_url='clients/login')
 def process_payment(request, order_code):
     try:
         order = get_object_or_404(Order, order_code=order_code)
@@ -507,7 +517,7 @@ def payment_cancelled(request):
     return render(request, 'payment_cancelled.html')
 
 
-@login_required
+@login_required(login_url='clients/login')
 @csrf_exempt
 def expenses(request):
     try:
@@ -564,7 +574,7 @@ def expense_category(request):
     pass
 
 
-@login_required
+@login_required(login_url='clients/login')
 def profile(request):
     user = request.user
     name = user.first_name + user.last_name
