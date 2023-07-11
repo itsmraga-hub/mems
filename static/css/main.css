@@ -82,3 +82,8 @@ select option {
   width: 40px;
   aspect-ratio: 1 / 1;
 } */
+
+
+.current-page {
+  padding: 0 1em;
+}
