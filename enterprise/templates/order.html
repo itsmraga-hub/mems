@@ -9,15 +9,15 @@
     {% for order in order_items %}
     <li>
       <span>{{order.product.name}} </span>
-      <span>{{order.price}} </span>
+      <span>{{order.price|floatformat:"2g"}} </span>
       <span>{{order.quantity}}</span>
-      <span>{{order.subtotal}}</span>
+      <span>{{order.subtotal|floatformat:"2g"}}</span>
     </li>
     {% endfor %}
   </ul>
   <div id="">
     <h4 class="" id="orderId" data-id="{{order.order_code}}" data-value="{{order.total_amount}}">Total:
-      {{order.total_amount}}</h4>
+      {{order.total_amount|floatformat:"2g"}}</h4>
   </div>
   <div id="paypal-button-container">
     <form action="{% url 'process_payment' order.order_code %}" method="GET">

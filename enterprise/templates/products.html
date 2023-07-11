@@ -16,7 +16,7 @@
       <img src="{{ product.image.url }}" alt="product.name" />
       {% endif %}
       <p class="product-name"><a href="{% url 'product' product.p_code %}">{{product.name}}</a></p>
-      <p class="product-price">$ {{product.price}}</p>
+      <p class="product-price">$ {{product.price|floatformat:"2g"}}</p>
     </div>
     <div class="quantity-cart">
       <input type="hidden" class="quantity" min="1" value="1">

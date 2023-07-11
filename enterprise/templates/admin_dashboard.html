@@ -10,27 +10,27 @@
     </div>
     <div>
       <p>Last month sales</p>
-      <span>${{sales}}</span>
+      <span>${{sales|floatformat:"2g"}}</span>
       <a href="{% url 'completed_orders' %}">view more</a>
     </div>
     <div>
       <p>Sales this month</p>
-      <span>${{sales}}</span>
+      <span>${{sales|floatformat:"2g"}}</span>
       <a href="{% url 'completed_orders' %}">view more</a>
     </div>
     <div>
       <p>All time sales</p>
-      <span>${{sales}}</span>
+      <span>${{sales|floatformat:"2g"}}</span>
       <a href="http://">view more</a>
     </div>
     <div>
       <p>Expenses</p>
-      <span>${{expenses}}</span>
+      <span>${{expenses|floatformat:"2g"}}</span>
       <a href="{% url 'expenses' %}">view more</a>
     </div>
     <div>
       <p>Credit & Business Loans</p>
-      <span>${{loan}}</span>
+      <span>${{loan|floatformat:"2g"}}</span>
       <a href="{% url 'expenses' %}">view more</a>
     </div>
     <div>

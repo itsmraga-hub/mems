@@ -24,7 +24,7 @@
       <tr>
         <td><a href="{% url 'process_payment' order.order_code %}">Order #{{order.id}}</a></td>
         <td>
-          {{order.total_amount}}
+          {{order.total_amount|floatformat:"2g"}}
         </td>
         <td>
           {% if order.paid %}

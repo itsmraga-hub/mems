@@ -44,9 +44,9 @@
       {% for order in order_items %}
       <tr>
         <td>{{order.product.name}} </td>
-        <td>{{order.price}} </td>
+        <td>{{order.price|floatformat:"2g"}} </td>
         <td>{{order.quantity}}</td>
-        <td>{{order.subtotal}}</td>
+        <td>{{order.subtotal|floatformat:"2g"}}</td>
       </tr>
       {% endfor %}
     </tbody>
