@@ -25,14 +25,14 @@
         <td>{{expense.category.name}}</td>
         <td>{{expense.date}}</td>
         <td>{{expense.description}}</td>
-        <td>{{expense.amount}}</td>
+        <td>${{expense.amount|floatformat:"2g"}}</td>
       </tr>
       {% endfor %}
     </tbody>
     <tfoot>
       <tr>
         <td colspan="3">Total this month</td>
-        <td>{{total}}</td>
+        <td>${{total}}</td>
       </tr>
     </tfoot>
     {% else %}

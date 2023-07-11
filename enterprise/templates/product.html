@@ -16,7 +16,7 @@
       {% if product.image %}
       <img src="{{ product.image.url }}" alt="product.name" />
       {% endif %}
-      <p class="product-price">At Only ${{product.price}}</p>
+      <p class="product-price">At Only ${{product.price|floatformat:"2g"}}</p>
     </div>
     <div class="quantity-cart">
       <input type="number" class="quantity" min="1" value="1">

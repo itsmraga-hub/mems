@@ -61,6 +61,7 @@
       {% endif %}
       <li><a href="{% url 'pending_orders' %}">Pending Orders</a></li>
       <li><a href="{% url 'completed_orders' %} ">Complete Orders</a></li>
+      <li><a href="{% url 'cancelled_orders' %} ">Cancelled Orders</a></li>
     </ul>
   </div>
   {% if user.is_admin or user.is_staff %}

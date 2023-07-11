@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 from django.contrib.auth.views import LogoutView
 from . import views
 
+
 urlpatterns = [
     path('', views.homeview, name='home'),
     path('dashboard', views.dashboard, name='dashboard'),
@@ -24,6 +25,7 @@ urlpatterns = [
     path('finances', views.track_finances, name='finances'),
     path('orders/pending', views.pending_orders, name='pending_orders'),
     path('orders/completed', views.completed_orders, name='completed_orders'),
+    path('orders/cancelled', views.cancelled_orders, name='cancelled_orders'),
     path('add_to_order', views.add_to_order, name='add_to_order'),
     path('orders/<str:order_code>', views.order, name='order'),
     path('order/', views.new_order, name='new_order'),
@@ -49,12 +51,7 @@ urlpatterns = [
     path('password-reset-confirm/<str:uidb64>/<str:token>', views.password_reset_confirm, name='password_reset_confirm'),
 ]
 
+
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,
                           document_root=settings.STATIC_ROOT)
-
-
-# path('password-reset/', PasswordResetView.as_view(template_name='password_reset.html'),name='password_reset'),
-# path('password-reset/done/', PasswordResetDoneView.as_view(template_name='password_reset_done.html'),name='password_reset_done'),
-# path('password-reset-confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'),name='password_reset_confirm'),
-# path('password-reset-complete/',PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'),name='password_reset_complete'),

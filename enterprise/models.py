@@ -267,9 +267,9 @@ class Payment(models.Model):
 class MonthlyData(models.Model):
     month = models.PositiveIntegerField()
     year = models.PositiveIntegerField()
-    total_expenses = models.DecimalField(max_digits=8, decimal_places=2, null=True)
-    total_sales = models.DecimalField(max_digits=8, decimal_places=2, null=True)
-    profit_loss = models.DecimalField(max_digits=8, decimal_places=2, null=True)
+    total_expenses = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    total_sales = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    profit_loss = models.DecimalField(max_digits=10, decimal_places=2, null=True)
 
     def calculate_profit_loss(self):
         self.profit_loss = self.total_sales - self.total_expenses

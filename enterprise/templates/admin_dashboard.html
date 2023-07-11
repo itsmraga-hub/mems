@@ -5,33 +5,38 @@
   <section class="main-content-container__dashboard">
     <div>
       <p>Finances</p>
-      <span>$0</span>
+      <span>View Profits & Losses</span>
       <a href="{% url 'finances' %}">view more</a>
     </div>
     <div>
+      <p>Last month sales</p>
+      <span>${{sales|floatformat:"2g"}}</span>
+      <a href="{% url 'completed_orders' %}">view more</a>
+    </div>
+    <div>
       <p>Sales this month</p>
-      <span>$10008</span>
-      <a href="http://">view more</a>
+      <span>${{sales|floatformat:"2g"}}</span>
+      <a href="{% url 'completed_orders' %}">view more</a>
     </div>
     <div>
       <p>All time sales</p>
-      <span>$10008</span>
+      <span>${{sales|floatformat:"2g"}}</span>
       <a href="http://">view more</a>
     </div>
     <div>
       <p>Expenses</p>
-      <span>$10008</span>
-      <a href="http://">view more</a>
+      <span>${{expenses|floatformat:"2g"}}</span>
+      <a href="{% url 'expenses' %}">view more</a>
     </div>
     <div>
       <p>Credit & Business Loans</p>
-      <span>$10008</span>
-      <a href="http://">view more</a>
+      <span>${{loan|floatformat:"2g"}}</span>
+      <a href="{% url 'expenses' %}">view more</a>
     </div>
     <div>
       <p>Top Clients</p>
-      <span>$10008</span>
-      <a href="http://">view more</a>
+      <span>{{clients}} clients</span>
+      <a href="{% url 'clients' %}">view more</a>
     </div>
   </section>
 </div>

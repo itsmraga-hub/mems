@@ -26,6 +26,9 @@ SECRET_KEY = 'django-insecure-xj+1zl79!7fyf=&gw0($r4rycw6yr-4$0sskhqf!53)6$)l3ea
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+USE_THOUAND_SEPARATOR = True
+# USE_L10N = False
+
 # ALLOWED_HOSTS = ['*', '*.ngrok-free.app', 'https://1276-105-163-1-222.ngrok-free.app']
 ALLOWED_HOSTS = ['app.williamraga.tech', 'williamraga.tech', '*']
 
@@ -82,9 +85,9 @@ WSGI_APPLICATION = 'mems.wsgi.application'
 
 AUTH_USER_MODEL = 'enterprise.User'
 
-LOGOUT_REDIRECT_URL = '/clients/login'
+LOGOUT_REDIRECT_URL = 'clients/login'
 
-LOGIN_REDIRECT_URL = '/clients/login'
+LOGIN_REDIRECT_URL = 'clients/login'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -92,7 +95,7 @@ LOGIN_REDIRECT_URL = '/clients/login'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'mems',
+        'NAME': 'mems_backup',
         'USER': 'raga',
         'PASSWORD': 'root',
         'HOST': '127.0.0.1',
