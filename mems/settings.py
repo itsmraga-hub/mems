@@ -82,9 +82,9 @@ WSGI_APPLICATION = 'mems.wsgi.application'
 
 AUTH_USER_MODEL = 'enterprise.User'
 
-LOGOUT_REDIRECT_URL = '/clients/login'
+LOGOUT_REDIRECT_URL = 'clients/login'
 
-LOGIN_REDIRECT_URL = '/clients/login'
+LOGIN_REDIRECT_URL = 'clients/login'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -92,7 +92,7 @@ LOGIN_REDIRECT_URL = '/clients/login'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'mems',
+        'NAME': 'mems_backup',
         'USER': 'raga',
         'PASSWORD': 'root',
         'HOST': '127.0.0.1',
