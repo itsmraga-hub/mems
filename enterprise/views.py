@@ -37,6 +37,9 @@ from .process_order import ProcessOrder
 # Create your views here.
 # @login_required
 def homeview(request):
+    """
+        Functional view for homeview page
+    """
     # return HttpResponse('index.html')
     user = request.user
     products = Product.objects.all()
@@ -45,21 +48,43 @@ def homeview(request):
 
 @login_required(login_url='clients/login')
 def dashboard(request):
+    """
+        Functional view for dashboard
+    """
     # Get current month and year
     today = date.today()
     month = today.month
     year = today.year
 
     # Calculate total expenses for the current month
-    total_expenses = Expense.objects.filter(date__month=month).aggregate(Sum('amount'))['amount__sum'] or 0
+    total_expenses = Order.objects.filter(client=request.user).aggregate(Sum('total_amount'))['total_amount__sum'] or 0
+
+    orders = len(Order.objects.filter(client=request.user))
+    ca_orders = len(Order.objects.filter(status='cancelled', client=request.user))
+    p_orders = len(Order.objects.filter(status='pending', client=request.user))
+    co_orders = len(Order.objects.filter(status='completed', client=request.user))
+    clients = len(User.objects.filter(is_staff=False, is_admin=False))
+
+    context = {
+        'orders': orders,
+        'p_orders': p_orders,
+        'co_orders': co_orders,
+        'ca_orders': ca_orders,
+        'clients': clients,
+        'expenses': total_expenses
+    }
 
     # Calculate total sales for the current month
     total_sales = Order.objects.filter(order_date__month=month).aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    return render(request, 'dashboard.html')
+    return render(request, 'dashboard.html', context)
 
 
 @login_required(login_url='clients/login')
 def track_finances(request):
+    """
+        Functional view for tracking finances:
+            fetches data over a period of the current month
+    """
     # Get current month and year
     today = date.today()
     month = today.month
@@ -73,7 +98,6 @@ def track_finances(request):
 
     # Calculate profit/loss
     profit_loss = total_sales - total_expenses
-
     # Create or update MonthlyData for the current month
     monthly_data, _ = MonthlyData.objects.get_or_create(month=month, year=year)
     monthly_data.total_expenses = total_expenses
@@ -104,13 +128,18 @@ def admin_dashboard(request):
 
     # Calculate total sales for the current month
     total_sales = Order.objects.filter(order_date__month=month).aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    loans = Loan.objects.all()
+    loans = Loan.objects.all().aggregate(Sum('amount'))['amount__sum'] or 0
     expenses = Expense.objects.all()
+    clients = len(User.objects.filter(is_staff=False, is_admin=False))
 
-    return render(request, 'admin_dashboard.html')
+    return render(request, 'admin_dashboard.html', {'expenses': total_expenses, 'sales': total_sales, 'loan': loans, 'clients': clients})
 
 
 def client_signup(request):
+    """
+        Client sign up functional view:
+        takes a number of details from client_signup form and posts them, creating a user account.
+    """
     try:
         if request.method == 'POST':
             email = request.POST.get('email')
@@ -309,6 +338,21 @@ def completed_orders(request):
 
 
 @login_required(login_url='clients/login')
+def cancelled_orders(request):
+    try:
+        # orders = Order.objects.filter(status='completed')
+        orders = []
+        if request.user.is_staff:
+            orders = Order.objects.filter(status='cancelled')
+        else:
+            orders = Order.objects.filter(
+                client=request.user, status='cancelled')
+        return render(request, 'orders.html', {'orders': orders})
+    except Exception as e:
+        return HttpResponse(json.dumps({'status': 'fail', 'data': {'message': str(e)}}))
+
+
+@login_required(login_url='clients/login')
 def new_order(request):
     products_param = request.GET.get('products')
     products = json.loads(products_param) if products_param else []
@@ -344,6 +388,7 @@ def new_order(request):
     return render(request, 'new_order.html', {'selected_products': selected_products})
 
 
+@login_required(login_url='clients/login')
 def confirm_order(request):
     if request.method == 'POST':
         print(request.__dict__)
@@ -533,6 +578,7 @@ def payment_done(request):
 
 
 @csrf_exempt
+@login_required(login_url='clients/login')
 def payment_cancelled(request):
     return render(request, 'payment_cancelled.html')
 
@@ -567,11 +613,13 @@ def expenses(request):
         print(e)
 
 
+@login_required(login_url='clients/login')
 def expense(request, e_code):
     expense = get_object_or_404(Expense, e_code=e_code)
     return render(request, 'expense.html', {'expense': expense})
 
 
+@login_required(login_url='clients/login')
 def new_expense(request):
     if request.method == 'POST':
         description = request.POST.get('description')
@@ -590,6 +638,7 @@ def new_expense(request):
     return render(request, 'new_expense.html', {'expense_categories': expense_categories})
 
 
+@login_required(login_url='clients/login')
 def expense_category(request):
     pass
 
