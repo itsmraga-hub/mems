@@ -53,8 +53,10 @@
       <i class="fas fa-caret-down"></i>
     </div>
     <ul class="sidebar-container__div-dropdown none" id="sidebar-container__div-dropdown-orders">
+      <li><a href="{% url 'my_orders' %}">My Orders</a></li>
+      {% if user.is_admin or user.is_staff %}
       <li><a href="{% url 'orders' %}">All Orders</a></li>
-      {% if user.is_admin %}
+
       <li><a href="{% url 'new_order' %}">Create Order</a></li>
       {% endif %}
       <li><a href="{% url 'pending_orders' %}">Pending Orders</a></li>
