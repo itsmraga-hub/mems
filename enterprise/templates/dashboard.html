@@ -1,37 +1,37 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="main-content-container" id="main-content-container">
-  <h1>Admin Dashboard: <span>enterprise at a glance</span></h1>
+  <h1>Client Dashboard: <span>enterprise at a glance</span></h1>
   <section class="main-content-container__dashboard">
     <div>
-      <p>Last month sales</p>
-      <span>$0</span>
-      <a href="http://">view more</a>
+      <p>Orders</p>
+      <span>{{orders}}</span>
+      <a href="{% url 'orders' %}">view more</a>
     </div>
     <div>
-      <p>Sales this month</p>
-      <span>$10008</span>
-      <a href="http://">view more</a>
+      <p>Pending Orders</p>
+      <span>{{p_orders}}</span>
+      <a href="{% url 'pending_orders' %}">view more</a>
     </div>
     <div>
-      <p>All time sales</p>
-      <span>$10008</span>
-      <a href="http://">view more</a>
+      <p>Complete Orders</p>
+      <span>{{co_orders}}</span>
+      <a href="{% url 'completed_orders' %}">view more</a>
     </div>
     <div>
       <p>Expenses</p>
-      <span>$10008</span>
-      <a href="http://">view more</a>
+      <span>${{expenses}}</span>
+      <a href="{% url 'expenses' %}">view more</a>
     </div>
     <div>
-      <p>Credit & Business Loans</p>
-      <span>$10008</span>
-      <a href="http://">view more</a>
+      <p>cancelled Orders</p>
+      <span>${{ca_orders}}</span>
+      <a href="{% url 'cancelled_orders' %}">view more</a>
     </div>
     <div>
-      <p>Top Clients</p>
-      <span>$10008</span>
-      <a href="http://">view more</a>
+      <p>Clients</p>
+      <span>{{clients}}</span>
+      <a href="{% url 'clients' %}">view more</a>
     </div>
   </section>
 </div>
