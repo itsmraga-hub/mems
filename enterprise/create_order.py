@@ -32,6 +32,7 @@ class CreateOrder:
             price=int(selected_product.price)
           )
           product.quantity -= int(selected_product.client_quantity)
+          product.save()
           if product.quantity < 0:
             return HttpResponse(json.dumps({'status': 'failed', 'data': {'message': 'product not available right now'}}))
           item_total = item.subtotal()
